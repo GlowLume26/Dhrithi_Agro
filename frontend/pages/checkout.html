@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Checkout - Drithi Agro</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <style>
+    .checkout-page { display: grid; grid-template-columns: 1fr 380px; gap: 30px; padding: 30px 40px; max-width: 1200px; margin: 0 auto; }
+    .checkout-steps { display: flex; align-items: center; gap: 0; margin-bottom: 24px; background: white; border-radius: 14px; padding: 16px 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+    .cs { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #999; }
+    .cs.active { color: #2e7d32; }
+    .cs.done { color: #4caf50; }
+    .cs-num { width: 28px; height: 28px; border-radius: 50%; background: #e0e0e0; color: #999; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+    .cs.active .cs-num { background: #2e7d32; color: white; }
+    .cs.done .cs-num { background: #4caf50; color: white; }
+    .cs-line { flex: 1; height: 2px; background: #e0e0e0; margin: 0 12px; }
+    .cs-line.done { background: #4caf50; }
+    .section-card { background: white; border-radius: 14px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); margin-bottom: 16px; }
+    .section-card h3 { font-size: 16px; font-weight: 800; color: #1b5e20; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: 1/-1; }
+    .form-group label { font-size: 13px; font-weight: 600; color: #333; }
+    .form-group input, .form-group select, .form-group textarea { padding: 11px 14px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 14px; outline: none; transition: border 0.2s; font-family: inherit; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #2e7d32; }
+    .address-card { border: 2px solid #e0e0e0; border-radius: 12px; padding: 16px; cursor: pointer; transition: all 0.2s; margin-bottom: 12px; }
+    .address-card.selected { border-color: #2e7d32; background: #f9fbe7; }
+    .address-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .address-card p { font-size: 13px; color: #666; line-height: 1.5; }
+    .address-card .addr-tag { display: inline-block; background: #e8f5e9; color: #2e7d32; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; margin-bottom: 6px; }
+    .payment-option { border: 2px solid #e0e0e0; border-radius: 12px; padding: 16px; cursor: pointer; transition: all 0.2s; margin-bottom: 10px; display: flex; align-items: center; gap: 14px; }
+    .payment-option.selected { border-color: #2e7d32; background: #f9fbe7; }
+    .payment-option input[type=radio] { accent-color: #2e7d32; width: 18px; height: 18px; }
+    .payment-option .po-icon { font-size: 24px; }
+    .payment-option .po-info h4 { font-size: 14px; font-weight: 700; }
+    .payment-option .po-info p { font-size: 12px; color: #888; }
+    .order-summary { background: white; border-radius: 14px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); position: sticky; top: 80px; }
+    .order-summary h3 { font-size: 16px; font-weight: 800; color: #1b5e20; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid #e8f5e9; }
+    .order-item { display: flex; gap: 12px; margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid #f0f0f0; }
+    .order-item img { width: 56px; height: 56px; border-radius: 8px; object-fit: cover; border: 1px solid #e8f5e9; }
+    .order-item-info h5 { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+    .order-item-info span { font-size: 12px; color: #888; }
+    .order-item-price { margin-left: auto; font-size: 14px; font-weight: 700; color: #1b5e20; }
+    .summary-row { display: flex; justify-content: space-between; font-size: 14px; color: #555; margin-bottom: 10px; }
+    .summary-row.total { font-size: 18px; font-weight: 800; color: #1b5e20; border-top: 2px solid #e8f5e9; padding-top: 12px; margin-top: 4px; }
+    .place-order-btn { width: 100%; background: #2e7d32; color: white; border: none; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-top: 16px; }
+    .place-order-btn:hover { background: #1b5e20; transform: translateY(-2px); }
+    .success-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; align-items: center; justify-content: center; }
+    .success-overlay.show { display: flex; }
+    .success-box { background: white; border-radius: 20px; padding: 50px 40px; text-align: center; max-width: 440px; width: 90%; }
+    .success-box .s-icon { font-size: 72px; margin-bottom: 20px; }
+    .success-box h2 { font-size: 26px; font-weight: 800; color: #1b5e20; margin-bottom: 10px; }
+    .success-box p { color: #666; font-size: 14px; margin-bottom: 6px; }
+    .success-box .order-id { background: #e8f5e9; color: #2e7d32; padding: 8px 20px; border-radius: 20px; font-weight: 700; font-size: 15px; display: inline-block; margin: 12px 0; }
+    @media (max-width: 900px) { .checkout-page { grid-template-columns: 1fr; } }
+    @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<div id="header-root"></div>
+
+<div style="background:#f5f5f5;padding:12px 40px;font-size:13px;color:#666;">
+  <a href="../index.html" style="color:#2e7d32;">Home</a> › <a href="cart.html" style="color:#2e7d32;">Cart</a> › Checkout
+</div>
+
+<div class="checkout-page">
+  <div>
+    <!-- STEPS -->
+    <div class="checkout-steps">
+      <div class="cs done"><div class="cs-num">✓</div><span>Cart</span></div>
+      <div class="cs-line done"></div>
+      <div class="cs active"><div class="cs-num">2</div><span>Address</span></div>
+      <div class="cs-line"></div>
+      <div class="cs"><div class="cs-num">3</div><span>Payment</span></div>
+      <div class="cs-line"></div>
+      <div class="cs"><div class="cs-num">4</div><span>Confirm</span></div>
+    </div>
+
+    <!-- DELIVERY ADDRESS -->
+    <div class="section-card">
+      <h3>📍 Delivery Address</h3>
+      <div class="address-card selected" onclick="selectAddr(this)">
+        <span class="addr-tag">🏠 Home</span>
+        <h4>Ramesh Patil</h4>
+        <p>Survey No. 45, Near Gram Panchayat, Nashik Rural, Nashik — 422003, Maharashtra</p>
+        <p style="margin-top:4px;font-size:12px;color:#2e7d32;">📱 +91 98765 43210</p>
+      </div>
+      <div class="address-card" onclick="selectAddr(this)">
+        <span class="addr-tag">🏭 Farm</span>
+        <h4>Ramesh Patil</h4>
+        <p>Gat No. 12, Dindori Road, Niphad, Nashik — 422303, Maharashtra</p>
+        <p style="margin-top:4px;font-size:12px;color:#2e7d32;">📱 +91 98765 43210</p>
+      </div>
+
+      <div style="margin-top:16px;">
+        <button onclick="toggleNewAddr()" style="background:#f9fbe7;border:2px dashed #2e7d32;color:#2e7d32;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;width:100%;">+ Add New Address</button>
+      </div>
+
+      <div id="newAddrForm" style="display:none;margin-top:16px;">
+        <div class="form-grid">
+          <div class="form-group"><label>Full Name</label><input type="text" placeholder="Enter full name"/></div>
+          <div class="form-group"><label>Mobile Number</label><input type="tel" placeholder="+91 XXXXX XXXXX"/></div>
+          <div class="form-group full"><label>Address Line 1</label><input type="text" placeholder="House/Farm No., Street, Village"/></div>
+          <div class="form-group full"><label>Address Line 2</label><input type="text" placeholder="Landmark (optional)"/></div>
+          <div class="form-group"><label>City / Town</label><input type="text" placeholder="City or Town"/></div>
+          <div class="form-group"><label>Pincode</label><input type="text" placeholder="6-digit pincode" maxlength="6"/></div>
+          <div class="form-group"><label>State</label>
+            <select>
+              <option>Maharashtra</option><option>Uttar Pradesh</option><option>Punjab</option>
+              <option>Karnataka</option><option>Tamil Nadu</option><option>Gujarat</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Address Type</label>
+            <select><option>Home</option><option>Farm</option><option>Office</option></select>
+          </div>
+          <div class="form-group full">
+            <button style="background:#2e7d32;color:white;border:none;padding:12px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;">Save Address</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAYMENT METHOD -->
+    <div class="section-card">
+      <h3>💳 Payment Method</h3>
+      <div class="payment-option selected" onclick="selectPayment(this)">
+        <input type="radio" name="payment" checked/>
+        <span class="po-icon">📱</span>
+        <div class="po-info"><h4>UPI Payment</h4><p>Pay using Google Pay, PhonePe, Paytm, BHIM UPI</p></div>
+      </div>
+      <div class="payment-option" onclick="selectPayment(this)">
+        <input type="radio" name="payment"/>
+        <span class="po-icon">💳</span>
+        <div class="po-info"><h4>Credit / Debit Card</h4><p>Visa, Mastercard, RuPay — All cards accepted</p></div>
+      </div>
+      <div class="payment-option" onclick="selectPayment(this)">
+        <input type="radio" name="payment"/>
+        <span class="po-icon">🏦</span>
+        <div class="po-info"><h4>Net Banking</h4><p>All major Indian banks supported</p></div>
+      </div>
+      <div class="payment-option" onclick="selectPayment(this)">
+        <input type="radio" name="payment"/>
+        <span class="po-icon">💰</span>
+        <div class="po-info"><h4>Cash on Delivery</h4><p>Pay when your order arrives at your doorstep</p></div>
+      </div>
+      <div style="margin-top:12px;background:#e8f5e9;border-radius:10px;padding:12px;font-size:12px;color:#2e7d32;font-weight:600;">
+        🔒 Payments secured by Razorpay — PCI DSS Compliant
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDER SUMMARY -->
+  <div class="order-summary">
+    <h3>📦 Order Summary</h3>
+    <div class="order-item">
+      <img src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=200&q=80" alt=""/>
+      <div class="order-item-info"><h5>Hybrid Tomato Seeds F1 (10g)</h5><span>Qty: 2 × ₹299</span></div>
+      <span class="order-item-price">₹598</span>
+    </div>
+    <div class="order-item">
+      <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=200&q=80" alt=""/>
+      <div class="order-item-info"><h5>NPK 19:19:19 Fertilizer 1kg</h5><span>Qty: 1 × ₹185</span></div>
+      <span class="order-item-price">₹185</span>
+    </div>
+    <div class="order-item">
+      <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=200&q=80" alt=""/>
+      <div class="order-item-info"><h5>Neem Oil 10000 PPM 1L</h5><span>Qty: 1 × ₹840</span></div>
+      <span class="order-item-price">₹840</span>
+    </div>
+    <div class="summary-row"><span>Subtotal</span><span>₹1,923</span></div>
+    <div class="summary-row" style="color:#2e7d32;font-weight:600;"><span>Discount</span><span>− ₹427</span></div>
+    <div class="summary-row"><span>Delivery</span><span style="color:#2e7d32;font-weight:600;">FREE</span></div>
+    <div class="summary-row total"><span>Total</span><span>₹1,496</span></div>
+    <div style="font-size:12px;color:#2e7d32;font-weight:600;margin-top:6px;">🎉 You save ₹427 on this order!</div>
+    <button class="place-order-btn" onclick="placeOrder()">🔒 Place Order — ₹1,496</button>
+    <div style="text-align:center;font-size:11px;color:#888;margin-top:10px;">By placing order, you agree to our Terms & Conditions</div>
+  </div>
+</div>
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-box">
+    <div class="s-icon">🎉</div>
+    <h2>Order Placed Successfully!</h2>
+    <p>Thank you for your order. Your farm supplies are on the way!</p>
+    <div class="order-id">Order #DA-2025-78432</div>
+    <p style="font-size:13px;color:#2e7d32;font-weight:600;">Expected Delivery: Tomorrow by 5 PM</p>
+    <div style="display:flex;gap:12px;margin-top:24px;justify-content:center;">
+      <button onclick="location.href='orders.html'" style="background:#2e7d32;color:white;border:none;padding:12px 24px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;">📦 Track Order</button>
+      <button onclick="location.href='../index.html'" style="background:#f5f5f5;color:#333;border:none;padding:12px 24px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;">🏠 Continue Shopping</button>
+    </div>
+  </div>
+</div>
+
+<div id="footer-root"></div>
+<script src="../js/components.js"></script>
+<script>
+  document.getElementById('header-root').innerHTML = renderHeader('');
+  document.getElementById('footer-root').innerHTML = renderFooter();
+
+  function selectAddr(el) {
+    document.querySelectorAll('.address-card').forEach(a => a.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+  function selectPayment(el) {
+    document.querySelectorAll('.payment-option').forEach(p => p.classList.remove('selected'));
+    el.classList.add('selected');
+    el.querySelector('input[type=radio]').checked = true;
+  }
+  function toggleNewAddr() {
+    const f = document.getElementById('newAddrForm');
+    f.style.display = f.style.display === 'none' ? 'block' : 'none';
+  }
+  function placeOrder() {
+    document.getElementById('successOverlay').classList.add('show');
+  }
+</script>
+</body>
+</html>

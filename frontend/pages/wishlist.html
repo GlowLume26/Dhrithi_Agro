@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Wishlist - Drithi Agro</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <style>
+    .wishlist-page { max-width: 1200px; margin: 0 auto; padding: 30px 40px; }
+    .wishlist-page h1 { font-size: 26px; font-weight: 800; color: #1b5e20; margin-bottom: 24px; }
+    .wishlist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; }
+    .wish-card { background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.07); transition: transform 0.2s; position: relative; }
+    .wish-card:hover { transform: translateY(-4px); }
+    .wish-remove { position: absolute; top: 10px; right: 10px; background: white; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); transition: all 0.2s; }
+    .wish-remove:hover { background: #ffebee; }
+    .wish-img { height: 180px; overflow: hidden; }
+    .wish-img img { width: 100%; height: 100%; object-fit: cover; }
+    .wish-info { padding: 16px; }
+    .wish-info h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; line-height: 1.4; }
+    .wish-info .brand { font-size: 12px; color: #888; margin-bottom: 8px; }
+    .wish-price { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+    .wish-price .price { font-size: 18px; font-weight: 800; color: #1b5e20; }
+    .wish-price .old { font-size: 13px; color: #999; text-decoration: line-through; }
+    .wish-price .disc { font-size: 12px; color: #e53935; font-weight: 600; }
+    .wish-add { width: 100%; background: #2e7d32; color: white; border: none; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    .wish-add:hover { background: #1b5e20; }
+    .stock-out { background: #f5f5f5; color: #999; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+<div id="header-root"></div>
+
+<div style="background:#f5f5f5;padding:12px 40px;font-size:13px;color:#666;">
+  <a href="../index.html" style="color:#2e7d32;">Home</a> › My Wishlist
+</div>
+
+<div class="wishlist-page">
+  <h1>❤️ My Wishlist <span style="font-size:16px;color:#888;font-weight:400;">(6 items)</span></h1>
+
+  <div class="wishlist-grid">
+    <div class="wish-card">
+      <button class="wish-remove" onclick="removeWish(this)" title="Remove">✕</button>
+      <div class="wish-img"><img src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=400&q=80" alt=""/></div>
+      <div class="wish-info">
+        <h4>Hybrid Tomato Seeds F1 - High Yield (10g)</h4>
+        <div class="brand">Syngenta India Ltd.</div>
+        <div class="wish-price"><span class="price">₹299</span><span class="old">₹450</span><span class="disc">33% OFF</span></div>
+        <button class="wish-add" onclick="addToCart('Hybrid Tomato Seeds')">🛒 Add to Cart</button>
+      </div>
+    </div>
+    <div class="wish-card">
+      <button class="wish-remove" onclick="removeWish(this)" title="Remove">✕</button>
+      <div class="wish-img"><img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80" alt=""/></div>
+      <div class="wish-info">
+        <h4>NPK 19:19:19 Water Soluble Fertilizer 1kg</h4>
+        <div class="brand">IFFCO</div>
+        <div class="wish-price"><span class="price">₹185</span><span class="old">₹220</span><span class="disc">16% OFF</span></div>
+        <button class="wish-add" onclick="addToCart('NPK Fertilizer')">🛒 Add to Cart</button>
+      </div>
+    </div>
+    <div class="wish-card">
+      <button class="wish-remove" onclick="removeWish(this)" title="Remove">✕</button>
+      <div class="wish-img"><img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=400&q=80" alt=""/></div>
+      <div class="wish-info">
+        <h4>Neem Oil 10000 PPM Bio Insecticide 1L</h4>
+        <div class="brand">Anand Agro</div>
+        <div class="wish-price"><span class="price">₹840</span><span class="old">₹1100</span><span class="disc">24% OFF</span></div>
+        <button class="wish-add" onclick="addToCart('Neem Oil')">🛒 Add to Cart</button>
+      </div>
+    </div>
+    <div class="wish-card">
+      <button class="wish-remove" onclick="removeWish(this)" title="Remove">✕</button>
+      <div class="wish-img"><img src="https://images.unsplash.com/photo-1560493676-04071c5f467b?w=400&q=80" alt=""/></div>
+      <div class="wish-info">
+        <h4>Drip Irrigation Kit for 1 Acre</h4>
+        <div class="brand">Jain Irrigation</div>
+        <div class="wish-price"><span class="price">₹3,499</span><span class="old">₹4,500</span><span class="disc">22% OFF</span></div>
+        <button class="wish-add" onclick="addToCart('Drip Irrigation Kit')">🛒 Add to Cart</button>
+      </div>
+    </div>
+    <div class="wish-card">
+      <button class="wish-remove" onclick="removeWish(this)" title="Remove">✕</button>
+      <div class="wish-img"><img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=400&q=80" alt=""/></div>
+      <div class="wish-info">
+        <h4>Imidacloprid 17.8% SL Insecticide 500ml</h4>
+        <div class="brand">Bayer CropScience</div>
+        <div class="wish-price"><span class="price">₹420</span><span class="old">₹580</span><span class="disc">28% OFF</span></div>
+        <button class="wish-add stock-out" disabled>❌ Out of Stock</button>
+      </div>
+    </div>
+    <div class="wish-card">
+      <button class="wish-remove" onclick="removeWish(this)" title="Remove">✕</button>
+      <div class="wish-img"><img src="https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=400&q=80" alt=""/></div>
+      <div class="wish-info">
+        <h4>Humic Acid 98% Potassium Humate 300g</h4>
+        <div class="brand">Noble Crop Science</div>
+        <div class="wish-price"><span class="price">₹261</span><span class="old">₹350</span><span class="disc">25% OFF</span></div>
+        <button class="wish-add" onclick="addToCart('Humic Acid')">🛒 Add to Cart</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="footer-root"></div>
+<script src="../js/components.js"></script>
+<script>
+  document.getElementById('header-root').innerHTML = renderHeader('');
+  document.getElementById('footer-root').innerHTML = renderFooter();
+  function removeWish(btn) {
+    btn.closest('.wish-card').remove();
+    showToast('Removed from wishlist');
+  }
+</script>
+</body>
+</html>

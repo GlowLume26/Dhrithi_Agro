@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vendor Registration - Drithi Agro</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <style>
+    .vendor-reg-page { max-width: 900px; margin: 0 auto; padding: 40px; }
+    .vendor-hero { background: linear-gradient(135deg, #1b5e20, #2e7d32); border-radius: 20px; padding: 40px; color: white; text-align: center; margin-bottom: 32px; }
+    .vendor-hero h1 { font-size: 32px; font-weight: 900; margin-bottom: 10px; }
+    .vendor-hero p { font-size: 15px; opacity: 0.85; max-width: 500px; margin: 0 auto 20px; }
+    .vendor-benefits { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+    .vb { background: rgba(255,255,255,0.15); padding: 10px 18px; border-radius: 20px; font-size: 13px; font-weight: 600; }
+    .reg-steps { display: flex; align-items: center; gap: 0; margin-bottom: 32px; background: white; border-radius: 14px; padding: 20px 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+    .rs { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #999; flex: 1; }
+    .rs.active { color: #2e7d32; }
+    .rs.done { color: #4caf50; }
+    .rs-num { width: 32px; height: 32px; border-radius: 50%; background: #e0e0e0; color: #999; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+    .rs.active .rs-num { background: #2e7d32; color: white; }
+    .rs.done .rs-num { background: #4caf50; color: white; }
+    .rs-line { flex: 1; height: 2px; background: #e0e0e0; margin: 0 8px; }
+    .rs-line.done { background: #4caf50; }
+    .form-section { background: white; border-radius: 14px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); margin-bottom: 20px; }
+    .form-section h3 { font-size: 18px; font-weight: 800; color: #1b5e20; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid #e8f5e9; display: flex; align-items: center; gap: 8px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: 1/-1; }
+    .form-group label { font-size: 13px; font-weight: 600; color: #333; }
+    .form-group label .req { color: #e53935; }
+    .form-group input, .form-group select, .form-group textarea { padding: 11px 14px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 14px; outline: none; transition: border 0.2s; font-family: inherit; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #2e7d32; }
+    .upload-box { border: 2px dashed #c8e6c9; border-radius: 12px; padding: 24px; text-align: center; cursor: pointer; transition: all 0.2s; background: #f9fbe7; }
+    .upload-box:hover { border-color: #2e7d32; background: #e8f5e9; }
+    .upload-box .ub-icon { font-size: 36px; margin-bottom: 8px; }
+    .upload-box h4 { font-size: 14px; font-weight: 700; color: #1b5e20; margin-bottom: 4px; }
+    .upload-box p { font-size: 12px; color: #888; }
+    .upload-box input[type=file] { display: none; }
+    .upload-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+    .doc-uploaded { background: #e8f5e9; border: 2px solid #4caf50; border-radius: 12px; padding: 16px; text-align: center; }
+    .doc-uploaded .du-icon { font-size: 28px; margin-bottom: 6px; }
+    .doc-uploaded h5 { font-size: 13px; font-weight: 700; color: #1b5e20; }
+    .doc-uploaded span { font-size: 11px; color: #888; }
+    .submit-section { background: white; border-radius: 14px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); text-align: center; }
+    .submit-section p { font-size: 14px; color: #666; margin-bottom: 20px; line-height: 1.6; }
+    .submit-btn { background: #2e7d32; color: white; border: none; padding: 16px 48px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+    .submit-btn:hover { background: #1b5e20; transform: translateY(-2px); }
+    .success-screen { display: none; text-align: center; padding: 40px; }
+    .success-screen .ss-icon { font-size: 80px; margin-bottom: 20px; }
+    .success-screen h2 { font-size: 28px; font-weight: 800; color: #1b5e20; margin-bottom: 12px; }
+    .success-screen p { font-size: 15px; color: #666; line-height: 1.7; max-width: 500px; margin: 0 auto 24px; }
+    .vendor-id-box { background: #e8f5e9; border-radius: 12px; padding: 16px 24px; display: inline-block; margin: 16px 0; }
+    .vendor-id-box span { font-size: 13px; color: #666; display: block; margin-bottom: 4px; }
+    .vendor-id-box h3 { font-size: 24px; font-weight: 900; color: #1b5e20; }
+    @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .vendor-reg-page { padding: 20px; } }
+  </style>
+</head>
+<body>
+<div id="header-root"></div>
+
+<div style="background:#f5f5f5;padding:12px 40px;font-size:13px;color:#666;">
+  <a href="../index.html" style="color:#2e7d32;">Home</a> › Vendor Registration
+</div>
+
+<div class="vendor-reg-page">
+  <!-- HERO -->
+  <div class="vendor-hero">
+    <h1>🤝 Sell on Drithi Agro</h1>
+    <p>Join India's fastest growing agri-marketplace. Reach 5 lakh+ farmers across 28 states.</p>
+    <div class="vendor-benefits">
+      <span class="vb">🚀 Zero Setup Fee</span>
+      <span class="vb">📦 Logistics Support</span>
+      <span class="vb">💰 Weekly Payouts</span>
+      <span class="vb">📊 Analytics Dashboard</span>
+    </div>
+  </div>
+
+  <!-- STEPS -->
+  <div class="reg-steps">
+    <div class="rs active" id="rs1"><div class="rs-num">1</div><span>Business Details</span></div>
+    <div class="rs-line" id="rl1"></div>
+    <div class="rs" id="rs2"><div class="rs-num">2</div><span>Documents</span></div>
+    <div class="rs-line" id="rl2"></div>
+    <div class="rs" id="rs3"><div class="rs-num">3</div><span>Store Setup</span></div>
+    <div class="rs-line" id="rl3"></div>
+    <div class="rs" id="rs4"><div class="rs-num">4</div><span>Review</span></div>
+  </div>
+
+  <!-- STEP 1: BUSINESS DETAILS -->
+  <div id="step1">
+    <div class="form-section">
+      <h3>🏢 Business Information</h3>
+      <div class="form-grid">
+        <div class="form-group"><label>Business Name <span class="req">*</span></label><input type="text" placeholder="Your registered business name" id="bizName"/></div>
+        <div class="form-group"><label>Owner / Proprietor Name <span class="req">*</span></label><input type="text" placeholder="Full name as per PAN" id="ownerName"/></div>
+        <div class="form-group"><label>Mobile Number <span class="req">*</span></label><input type="tel" placeholder="+91 XXXXX XXXXX" id="bizMobile"/></div>
+        <div class="form-group"><label>Email Address <span class="req">*</span></label><input type="email" placeholder="business@example.com" id="bizEmail"/></div>
+        <div class="form-group"><label>GST Number <span class="req">*</span></label><input type="text" placeholder="22AAAAA0000A1Z5" id="gstNum" maxlength="15"/></div>
+        <div class="form-group"><label>PAN Number <span class="req">*</span></label><input type="text" placeholder="ABCDE1234F" id="panNum" maxlength="10"/></div>
+        <div class="form-group full"><label>Business Address <span class="req">*</span></label><textarea rows="2" placeholder="Full address of your business/warehouse" id="bizAddr"></textarea></div>
+        <div class="form-group"><label>City <span class="req">*</span></label><input type="text" placeholder="City" id="bizCity"/></div>
+        <div class="form-group"><label>State <span class="req">*</span></label>
+          <select id="bizState">
+            <option value="">Select State</option>
+            <option>Maharashtra</option><option>Uttar Pradesh</option><option>Punjab</option>
+            <option>Karnataka</option><option>Tamil Nadu</option><option>Gujarat</option>
+            <option>Rajasthan</option><option>Madhya Pradesh</option><option>Andhra Pradesh</option>
+            <option>Telangana</option><option>Bihar</option><option>West Bengal</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Pincode <span class="req">*</span></label><input type="text" placeholder="6-digit pincode" maxlength="6" id="bizPin"/></div>
+        <div class="form-group"><label>Business Type</label>
+          <select id="bizType">
+            <option>Sole Proprietorship</option><option>Partnership</option>
+            <option>Private Limited</option><option>LLP</option><option>Other</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:right;">
+      <button onclick="goStep(2)" style="background:#2e7d32;color:white;border:none;padding:14px 32px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;">Next: Upload Documents →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: DOCUMENTS -->
+  <div id="step2" style="display:none;">
+    <div class="form-section">
+      <h3>📄 Required Documents</h3>
+      <p style="font-size:13px;color:#666;margin-bottom:20px;">Upload clear scanned copies or photos. Accepted formats: JPG, PNG, PDF (Max 5MB each)</p>
+      <div class="upload-grid">
+        <div class="upload-box" onclick="document.getElementById('f-aadhaar').click()">
+          <input type="file" id="f-aadhaar" accept=".jpg,.png,.pdf" onchange="markUploaded(this,'Aadhaar Card','🪪')"/>
+          <div class="ub-icon">🪪</div>
+          <h4>Aadhaar Card</h4>
+          <p>Front & Back</p>
+        </div>
+        <div class="upload-box" onclick="document.getElementById('f-pan').click()">
+          <input type="file" id="f-pan" accept=".jpg,.png,.pdf" onchange="markUploaded(this,'PAN Card','💳')"/>
+          <div class="ub-icon">💳</div>
+          <h4>PAN Card</h4>
+          <p>Business or Personal PAN</p>
+        </div>
+        <div class="upload-box" onclick="document.getElementById('f-gst').click()">
+          <input type="file" id="f-gst" accept=".jpg,.png,.pdf" onchange="markUploaded(this,'GST Certificate','📋')"/>
+          <div class="ub-icon">📋</div>
+          <h4>GST Certificate</h4>
+          <p>GST Registration Certificate</p>
+        </div>
+        <div class="upload-box" onclick="document.getElementById('f-reg').click()">
+          <input type="file" id="f-reg" accept=".jpg,.png,.pdf" onchange="markUploaded(this,'Business Registration','🏢')"/>
+          <div class="ub-icon">🏢</div>
+          <h4>Business Registration</h4>
+          <p>Incorporation / Shop Act</p>
+        </div>
+        <div class="upload-box" onclick="document.getElementById('f-bank').click()">
+          <input type="file" id="f-bank" accept=".jpg,.png,.pdf" onchange="markUploaded(this,'Bank Passbook','🏦')"/>
+          <div class="ub-icon">🏦</div>
+          <h4>Bank Passbook</h4>
+          <p>Or Cancelled Cheque</p>
+        </div>
+        <div class="upload-box" onclick="document.getElementById('f-logo').click()">
+          <input type="file" id="f-logo" accept=".jpg,.png" onchange="markUploaded(this,'Business Logo','🖼️')"/>
+          <div class="ub-icon">🖼️</div>
+          <h4>Business Logo</h4>
+          <p>PNG/JPG, min 200×200px</p>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:12px;justify-content:space-between;">
+      <button onclick="goStep(1)" style="background:#f5f5f5;color:#333;border:none;padding:14px 32px;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;">← Back</button>
+      <button onclick="goStep(3)" style="background:#2e7d32;color:white;border:none;padding:14px 32px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;">Next: Store Setup →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: STORE SETUP -->
+  <div id="step3" style="display:none;">
+    <div class="form-section">
+      <h3>🏪 Store Details</h3>
+      <div class="form-grid">
+        <div class="form-group"><label>Store Name <span class="req">*</span></label><input type="text" placeholder="Your store display name" id="storeName"/></div>
+        <div class="form-group"><label>Store Category</label>
+          <select id="storeCategory">
+            <option>Seeds & Planting</option><option>Fertilizers & Nutrients</option>
+            <option>Pesticides & Herbicides</option><option>Organic Farming</option>
+            <option>Farm Equipment</option><option>Irrigation Systems</option>
+            <option>Animal Husbandry</option><option>Multi-Category</option>
+          </select>
+        </div>
+        <div class="form-group full"><label>Store Description <span class="req">*</span></label><textarea rows="3" placeholder="Describe your store, products, and specialization..." id="storeDesc"></textarea></div>
+        <div class="form-group"><label>Store Banner</label>
+          <div class="upload-box" onclick="document.getElementById('f-banner').click()" style="padding:16px;">
+            <input type="file" id="f-banner" accept=".jpg,.png" onchange="markUploaded(this,'Store Banner','🖼️')"/>
+            <div style="font-size:24px;">🖼️</div>
+            <p style="font-size:12px;margin-top:4px;">Upload store banner (1200×300px)</p>
+          </div>
+        </div>
+        <div class="form-group"><label>Bank Account Number <span class="req">*</span></label><input type="text" placeholder="Account number for payouts" id="bankAcc"/></div>
+        <div class="form-group"><label>IFSC Code <span class="req">*</span></label><input type="text" placeholder="IFSC code" id="ifscCode"/></div>
+        <div class="form-group"><label>Account Holder Name</label><input type="text" placeholder="Name as per bank records" id="accHolder"/></div>
+        <div class="form-group"><label>Bank Name</label><input type="text" placeholder="Bank name" id="bankName"/></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:12px;justify-content:space-between;">
+      <button onclick="goStep(2)" style="background:#f5f5f5;color:#333;border:none;padding:14px 32px;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;">← Back</button>
+      <button onclick="goStep(4)" style="background:#2e7d32;color:white;border:none;padding:14px 32px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;">Review & Submit →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: REVIEW -->
+  <div id="step4" style="display:none;">
+    <div class="form-section">
+      <h3>✅ Review Your Application</h3>
+      <div style="background:#f9fbe7;border-radius:12px;padding:20px;margin-bottom:16px;">
+        <h4 style="font-size:15px;font-weight:700;color:#1b5e20;margin-bottom:12px;">Business Details</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13px;">
+          <div><span style="color:#888;">Business Name:</span><br/><b id="rev-bizName">—</b></div>
+          <div><span style="color:#888;">Owner Name:</span><br/><b id="rev-ownerName">—</b></div>
+          <div><span style="color:#888;">Mobile:</span><br/><b id="rev-mobile">—</b></div>
+          <div><span style="color:#888;">Email:</span><br/><b id="rev-email">—</b></div>
+          <div><span style="color:#888;">GST Number:</span><br/><b id="rev-gst">—</b></div>
+          <div><span style="color:#888;">PAN Number:</span><br/><b id="rev-pan">—</b></div>
+        </div>
+      </div>
+      <div style="background:#e8f5e9;border-radius:12px;padding:16px;margin-bottom:16px;font-size:13px;color:#2e7d32;">
+        <b>📋 What happens next?</b><br/>
+        1. Our team will review your application within 2–3 business days.<br/>
+        2. You'll receive an email/SMS with the approval status.<br/>
+        3. Once approved, your Vendor ID and login credentials will be sent to your registered email & mobile.
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:16px;">
+        <input type="checkbox" id="agreeTerms" style="margin-top:3px;accent-color:#2e7d32;width:16px;height:16px;"/>
+        <label for="agreeTerms" style="font-size:13px;color:#555;cursor:pointer;">I agree to the <a href="#" style="color:#2e7d32;font-weight:600;">Vendor Terms & Conditions</a> and <a href="#" style="color:#2e7d32;font-weight:600;">Seller Policy</a> of Drithi Agro Marketplace.</label>
+      </div>
+    </div>
+    <div style="display:flex;gap:12px;justify-content:space-between;">
+      <button onclick="goStep(3)" style="background:#f5f5f5;color:#333;border:none;padding:14px 32px;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;">← Back</button>
+      <button onclick="submitApplication()" style="background:#2e7d32;color:white;border:none;padding:14px 40px;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;">🚀 Submit Application</button>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div id="successScreen" class="success-screen">
+    <div class="ss-icon">🎉</div>
+    <h2>Application Submitted!</h2>
+    <p>Your vendor registration has been submitted successfully. Our team will review your documents and get back to you within <b>2–3 business days</b>.</p>
+    <div class="vendor-id-box">
+      <span>Application Reference ID</span>
+      <h3>VR-2025-DA-4821</h3>
+    </div>
+    <p style="font-size:13px;color:#2e7d32;font-weight:600;">📧 Confirmation sent to your email & mobile</p>
+    <div style="margin-top:24px;display:flex;gap:12px;justify-content:center;">
+      <button onclick="location.href='../index.html'" style="background:#2e7d32;color:white;border:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;">🏠 Go to Home</button>
+    </div>
+  </div>
+</div>
+
+<div id="footer-root"></div>
+<script src="../js/components.js"></script>
+<script>
+  document.getElementById('header-root').innerHTML = renderHeader('');
+  document.getElementById('footer-root').innerHTML = renderFooter();
+
+  function goStep(n) {
+    [1,2,3,4].forEach(i => {
+      const el = document.getElementById('step'+i);
+      if (el) el.style.display = i === n ? 'block' : 'none';
+      const rs = document.getElementById('rs'+i);
+      if (rs) {
+        rs.className = 'rs' + (i < n ? ' done' : i === n ? ' active' : '');
+        rs.querySelector('.rs-num').textContent = i < n ? '✓' : i;
+      }
+      if (i < 4) {
+        const rl = document.getElementById('rl'+i);
+        if (rl) rl.className = 'rs-line' + (i < n ? ' done' : '');
+      }
+    });
+    if (n === 4) populateReview();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function populateReview() {
+    document.getElementById('rev-bizName').textContent = document.getElementById('bizName').value || '—';
+    document.getElementById('rev-ownerName').textContent = document.getElementById('ownerName').value || '—';
+    document.getElementById('rev-mobile').textContent = document.getElementById('bizMobile').value || '—';
+    document.getElementById('rev-email').textContent = document.getElementById('bizEmail').value || '—';
+    document.getElementById('rev-gst').textContent = document.getElementById('gstNum').value || '—';
+    document.getElementById('rev-pan').textContent = document.getElementById('panNum').value || '—';
+  }
+
+  function markUploaded(input, name, icon) {
+    if (!input.files[0]) return;
+    const box = input.closest('.upload-box');
+    box.className = 'doc-uploaded';
+    box.innerHTML = `<div class="du-icon">${icon}</div><h5>${name}</h5><span>✅ ${input.files[0].name}</span>`;
+  }
+
+  function submitApplication() {
+    if (!document.getElementById('agreeTerms').checked) {
+      alert('Please agree to the Terms & Conditions to proceed.');
+      return;
+    }
+    document.getElementById('step4').style.display = 'none';
+    document.getElementById('successScreen').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>

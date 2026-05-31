@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Detail - Drithi Agro</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <style>
+    .product-page { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; padding: 40px; max-width: 1200px; margin: 0 auto; }
+    .img-gallery { display: flex; flex-direction: column; gap: 12px; }
+    .main-img { border-radius: 16px; overflow: hidden; height: 420px; background: #f9fbe7; border: 2px solid #e8f5e9; }
+    .main-img img { width: 100%; height: 100%; object-fit: cover; }
+    .thumb-row { display: flex; gap: 10px; }
+    .thumb { width: 72px; height: 72px; border-radius: 10px; overflow: hidden; border: 2px solid #e0e0e0; cursor: pointer; transition: border 0.2s; }
+    .thumb:hover, .thumb.active { border-color: #2e7d32; }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .product-detail { display: flex; flex-direction: column; gap: 16px; }
+    .vendor-badge { display: inline-flex; align-items: center; gap: 6px; background: #e8f5e9; color: #2e7d32; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .product-title { font-size: 26px; font-weight: 800; color: #1a1a1a; line-height: 1.3; }
+    .rating-row { display: flex; align-items: center; gap: 12px; }
+    .stars { color: #f9a825; font-size: 16px; }
+    .rating-count { font-size: 13px; color: #666; }
+    .price-block { background: #f9fbe7; border-radius: 12px; padding: 16px; }
+    .price-main { font-size: 32px; font-weight: 900; color: #1b5e20; }
+    .price-old { font-size: 16px; color: #999; text-decoration: line-through; margin-left: 10px; }
+    .price-disc { background: #e53935; color: white; padding: 3px 10px; border-radius: 20px; font-size: 13px; font-weight: 700; margin-left: 8px; }
+    .price-save { font-size: 13px; color: #2e7d32; font-weight: 600; margin-top: 6px; }
+    .qty-row { display: flex; align-items: center; gap: 16px; }
+    .qty-label { font-size: 14px; font-weight: 600; color: #333; }
+    .qty-ctrl { display: flex; align-items: center; gap: 0; border: 2px solid #e0e0e0; border-radius: 10px; overflow: hidden; }
+    .qty-btn { width: 38px; height: 38px; border: none; background: #f5f5f5; font-size: 18px; cursor: pointer; transition: background 0.2s; }
+    .qty-btn:hover { background: #e8f5e9; }
+    .qty-val { width: 48px; text-align: center; font-size: 16px; font-weight: 700; border: none; outline: none; }
+    .action-btns { display: flex; gap: 12px; }
+    .btn-cart { flex: 1; background: #ff6f00; color: white; border: none; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+    .btn-cart:hover { background: #e65100; transform: translateY(-2px); }
+    .btn-buy { flex: 1; background: #2e7d32; color: white; border: none; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+    .btn-buy:hover { background: #1b5e20; transform: translateY(-2px); }
+    .btn-wish { width: 50px; height: 50px; border: 2px solid #e0e0e0; border-radius: 12px; background: white; font-size: 20px; cursor: pointer; transition: all 0.2s; }
+    .btn-wish:hover { border-color: #e53935; background: #ffebee; }
+    .delivery-info { background: white; border: 2px solid #e8f5e9; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+    .del-row { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #444; }
+    .del-row .di { font-size: 18px; }
+    .del-row b { color: #1b5e20; }
+    .spec-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .spec-table tr:nth-child(even) { background: #f9fbe7; }
+    .spec-table td { padding: 10px 14px; border: 1px solid #e8f5e9; }
+    .spec-table td:first-child { font-weight: 600; color: #333; width: 40%; }
+    .tabs-row { display: flex; gap: 0; border-bottom: 2px solid #e0e0e0; }
+    .tab-btn { padding: 12px 20px; font-size: 14px; font-weight: 600; border: none; background: none; cursor: pointer; color: #666; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
+    .tab-btn.active { color: #2e7d32; border-bottom-color: #2e7d32; }
+    .tab-content { padding: 20px 0; font-size: 14px; color: #555; line-height: 1.8; }
+    .review-card { background: #f9fbe7; border-radius: 12px; padding: 16px; margin-bottom: 14px; }
+    .review-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .review-avatar { width: 36px; height: 36px; border-radius: 50%; background: #2e7d32; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+    .review-name { font-weight: 700; font-size: 14px; }
+    .review-date { font-size: 12px; color: #999; }
+    .review-stars { color: #f9a825; font-size: 14px; }
+    .review-text { font-size: 13px; color: #555; line-height: 1.6; }
+    .related-section { padding: 40px; background: #f9fbe7; }
+    .related-section h2 { font-size: 22px; font-weight: 800; color: #1b5e20; margin-bottom: 20px; }
+    @media (max-width: 768px) {
+      .product-page { grid-template-columns: 1fr; padding: 20px; }
+      .action-btns { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+<div id="header-root"></div>
+
+<div style="background:#f5f5f5;padding:12px 40px;font-size:13px;color:#666;">
+  <a href="../index.html" style="color:#2e7d32;">Home</a> › <a href="categories.html" style="color:#2e7d32;">Seeds</a> › Hybrid Tomato Seeds F1
+</div>
+
+<div class="product-page">
+  <!-- IMAGE GALLERY -->
+  <div class="img-gallery">
+    <div class="main-img" id="mainImg">
+      <img src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=800&q=80" alt="Product" id="mainImgEl"/>
+    </div>
+    <div class="thumb-row">
+      <div class="thumb active" onclick="changeImg(this,'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=400&q=80')">
+        <img src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=200&q=80" alt=""/>
+      </div>
+      <div class="thumb" onclick="changeImg(this,'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=400&q=80')">
+        <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=200&q=80" alt=""/>
+      </div>
+      <div class="thumb" onclick="changeImg(this,'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80')">
+        <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=200&q=80" alt=""/>
+      </div>
+      <div class="thumb" onclick="changeImg(this,'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=400&q=80')">
+        <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=200&q=80" alt=""/>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCT DETAILS -->
+  <div class="product-detail">
+    <div>
+      <span class="vendor-badge">✅ Syngenta India Ltd.</span>
+      <span style="margin-left:8px;font-size:12px;color:#2e7d32;font-weight:600;">🏅 Verified Vendor</span>
+    </div>
+    <h1 class="product-title">Hybrid Tomato Seeds F1 - High Yield Variety (10g Pack)</h1>
+    <div class="rating-row">
+      <span class="stars">★★★★★</span>
+      <span style="font-size:16px;font-weight:700;color:#333;">4.8</span>
+      <span class="rating-count">(2,847 ratings • 1,203 reviews)</span>
+      <span style="font-size:12px;color:#2e7d32;font-weight:600;">✅ Verified Purchase</span>
+    </div>
+    <div class="price-block">
+      <div>
+        <span class="price-main">₹299</span>
+        <span class="price-old">₹450</span>
+        <span class="price-disc">33% OFF</span>
+      </div>
+      <div class="price-save">You save ₹151 on this product!</div>
+      <div style="font-size:12px;color:#666;margin-top:6px;">Inclusive of all taxes • Free delivery on orders above ₹499</div>
+    </div>
+
+    <div style="background:#e8f5e9;border-radius:10px;padding:12px 16px;font-size:13px;color:#2e7d32;font-weight:600;">
+      ✅ In Stock — Only 48 units left! Order soon.
+    </div>
+
+    <div class="qty-row">
+      <span class="qty-label">Quantity:</span>
+      <div class="qty-ctrl">
+        <button class="qty-btn" onclick="changeQty(-1)">−</button>
+        <input class="qty-val" id="qtyVal" value="1" readonly/>
+        <button class="qty-btn" onclick="changeQty(1)">+</button>
+      </div>
+      <span style="font-size:12px;color:#666;">Max 10 per order</span>
+    </div>
+
+    <div class="action-btns">
+      <button class="btn-cart" onclick="addToCart('Hybrid Tomato Seeds F1')">🛒 Add to Cart</button>
+      <button class="btn-buy" onclick="location.href='checkout.html'">⚡ Buy Now</button>
+      <button class="btn-wish" onclick="toggleWish(this)" title="Add to Wishlist">🤍</button>
+    </div>
+
+    <div class="delivery-info">
+      <div class="del-row"><span class="di">🚚</span><span>Free delivery by <b>Tomorrow, 5 PM</b> for orders placed before 2 PM</span></div>
+      <div class="del-row"><span class="di">📍</span><span>Deliver to: <b>Enter Pincode</b> <input type="text" placeholder="Enter pincode" style="border:1px solid #ccc;border-radius:6px;padding:4px 8px;font-size:12px;width:100px;margin-left:6px;"/></span></div>
+      <div class="del-row"><span class="di">🔄</span><span><b>7-day</b> easy return & replacement policy</span></div>
+      <div class="del-row"><span class="di">🛡️</span><span><b>100% Genuine</b> product — Verified by Drithi Agro</span></div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs-row">
+      <button class="tab-btn active" onclick="showTab('desc',this)">Description</button>
+      <button class="tab-btn" onclick="showTab('specs',this)">Specifications</button>
+      <button class="tab-btn" onclick="showTab('reviews',this)">Reviews (2,847)</button>
+    </div>
+
+    <div id="tab-desc" class="tab-content">
+      <p><b>Hybrid Tomato Seeds F1</b> is a premium high-yield variety developed by Syngenta for Indian farming conditions. These seeds produce firm, round tomatoes with excellent shelf life and disease resistance.</p>
+      <ul style="margin-top:12px;padding-left:20px;display:flex;flex-direction:column;gap:6px;">
+        <li>🌱 Germination rate: 95%+</li>
+        <li>🍅 Fruit weight: 80–120g per fruit</li>
+        <li>📅 Days to maturity: 65–70 days</li>
+        <li>🛡️ Resistant to ToMV, Fusarium Wilt, Verticillium Wilt</li>
+        <li>🌡️ Suitable for all seasons</li>
+        <li>📦 Pack size: 10g (approx. 1,500 seeds)</li>
+      </ul>
+    </div>
+
+    <div id="tab-specs" class="tab-content" style="display:none;">
+      <table class="spec-table">
+        <tr><td>Brand</td><td>Syngenta India Ltd.</td></tr>
+        <tr><td>Variety</td><td>F1 Hybrid</td></tr>
+        <tr><td>Pack Size</td><td>10 grams</td></tr>
+        <tr><td>Seed Count</td><td>~1,500 seeds</td></tr>
+        <tr><td>Germination</td><td>95%+</td></tr>
+        <tr><td>Maturity</td><td>65–70 days</td></tr>
+        <tr><td>Season</td><td>All seasons</td></tr>
+        <tr><td>Fruit Weight</td><td>80–120g</td></tr>
+        <tr><td>SKU</td><td>SYN-TOM-F1-10G</td></tr>
+        <tr><td>Country of Origin</td><td>India</td></tr>
+      </table>
+    </div>
+
+    <div id="tab-reviews" class="tab-content" style="display:none;">
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-avatar">R</div>
+          <div>
+            <div class="review-name">Ramesh Patil</div>
+            <div class="review-date">📍 Nashik, Maharashtra • 15 Jan 2025</div>
+          </div>
+          <div class="review-stars" style="margin-left:auto;">★★★★★</div>
+        </div>
+        <div class="review-text">Excellent seeds! Germination was almost 100%. My tomato crop this season was the best ever. Highly recommend to all farmers.</div>
+      </div>
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-avatar">S</div>
+          <div>
+            <div class="review-name">Sunita Devi</div>
+            <div class="review-date">📍 Lucknow, UP • 8 Jan 2025</div>
+          </div>
+          <div class="review-stars" style="margin-left:auto;">★★★★☆</div>
+        </div>
+        <div class="review-text">Good quality seeds. Delivery was fast. The plants are healthy and growing well. Will buy again next season.</div>
+      </div>
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-avatar">K</div>
+          <div>
+            <div class="review-name">Krishnamurthy</div>
+            <div class="review-date">📍 Coimbatore, TN • 2 Jan 2025</div>
+          </div>
+          <div class="review-stars" style="margin-left:auto;">★★★★★</div>
+        </div>
+        <div class="review-text">Best tomato seeds I have ever used. The yield was 40% more than my previous variety. Very happy with this purchase.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RELATED PRODUCTS -->
+<div class="related-section">
+  <h2>🌱 Related Products</h2>
+  <div class="products-grid">
+    <div class="product-card">
+      <span class="product-badge">Best Seller</span>
+      <button class="product-wish" onclick="toggleWish(this)">🤍</button>
+      <div class="product-img"><img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80" alt=""/></div>
+      <div class="product-info">
+        <h4>NPK 19:19:19 Water Soluble Fertilizer 1kg</h4>
+        <div class="brand">by IFFCO</div>
+        <div class="product-price"><span class="price">₹185</span><span class="old">₹220</span><span class="disc">16% OFF</span></div>
+        <button class="add-cart" onclick="addToCart('NPK Fertilizer')">🛒 Add to Cart</button>
+      </div>
+    </div>
+    <div class="product-card">
+      <button class="product-wish" onclick="toggleWish(this)">🤍</button>
+      <div class="product-img"><img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=400&q=80" alt=""/></div>
+      <div class="product-info">
+        <h4>Neem Oil 10000 PPM Bio Insecticide 1L</h4>
+        <div class="brand">by Anand Agro</div>
+        <div class="product-price"><span class="price">₹840</span><span class="old">₹1100</span><span class="disc">24% OFF</span></div>
+        <button class="add-cart" onclick="addToCart('Neem Oil')">🛒 Add to Cart</button>
+      </div>
+    </div>
+    <div class="product-card">
+      <button class="product-wish" onclick="toggleWish(this)">🤍</button>
+      <div class="product-img"><img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=400&q=80" alt=""/></div>
+      <div class="product-info">
+        <h4>Imidacloprid 17.8% SL Insecticide 500ml</h4>
+        <div class="brand">by Bayer</div>
+        <div class="product-price"><span class="price">₹420</span><span class="old">₹580</span><span class="disc">28% OFF</span></div>
+        <button class="add-cart" onclick="addToCart('Imidacloprid')">🛒 Add to Cart</button>
+      </div>
+    </div>
+    <div class="product-card">
+      <button class="product-wish" onclick="toggleWish(this)">🤍</button>
+      <div class="product-img"><img src="https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=400&q=80" alt=""/></div>
+      <div class="product-info">
+        <h4>Humic Acid 98% Potassium Humate 300g</h4>
+        <div class="brand">by Noble Crop</div>
+        <div class="product-price"><span class="price">₹261</span><span class="old">₹350</span><span class="disc">25% OFF</span></div>
+        <button class="add-cart" onclick="addToCart('Humic Acid')">🛒 Add to Cart</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="footer-root"></div>
+<script src="../js/components.js"></script>
+<script>
+  document.getElementById('header-root').innerHTML = renderHeader('');
+  document.getElementById('footer-root').innerHTML = renderFooter();
+
+  function changeImg(el, src) {
+    document.getElementById('mainImgEl').src = src;
+    document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+  function changeQty(d) {
+    const el = document.getElementById('qtyVal');
+    let v = parseInt(el.value) + d;
+    if (v < 1) v = 1;
+    if (v > 10) v = 10;
+    el.value = v;
+  }
+  function showTab(id, btn) {
+    document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).style.display = 'block';
+    btn.classList.add('active');
+  }
+</script>
+</body>
+</html>

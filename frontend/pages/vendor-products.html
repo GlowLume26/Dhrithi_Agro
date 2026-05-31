@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manage Products - Drithi Agro Vendor</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <style>
+    body { background: #f0f4f0; }
+    .dash-layout { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+    .sidebar { background: #1b5e20; color: white; padding: 24px 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+    .sidebar-logo { padding: 0 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 16px; }
+    .sidebar-logo h2 { font-size: 18px; font-weight: 800; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 12px 20px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; color: rgba(255,255,255,0.8); border-left: 3px solid transparent; }
+    .nav-item:hover, .nav-item.active { background: rgba(255,255,255,0.12); color: white; border-left-color: #f9a825; }
+    .nav-item .ni { font-size: 18px; }
+    .main-content { padding: 28px; }
+    .toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+    .toolbar h1 { font-size: 22px; font-weight: 800; color: #1b5e20; }
+    .add-btn { background: #2e7d32; color: white; border: none; padding: 11px 22px; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; }
+    .add-btn:hover { background: #1b5e20; }
+    .filter-bar { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    .filter-bar input { padding: 10px 14px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 13px; outline: none; flex: 1; min-width: 200px; }
+    .filter-bar input:focus { border-color: #2e7d32; }
+    .filter-bar select { padding: 10px 14px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 13px; outline: none; }
+    .products-table { background: white; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); overflow: hidden; }
+    .table-header { display: grid; grid-template-columns: 60px 1fr 120px 100px 80px 100px 120px; gap: 12px; padding: 14px 20px; background: #f9fbe7; font-size: 12px; font-weight: 700; color: #1b5e20; text-transform: uppercase; }
+    .table-row { display: grid; grid-template-columns: 60px 1fr 120px 100px 80px 100px 120px; gap: 12px; padding: 14px 20px; border-bottom: 1px solid #f5f5f5; align-items: center; transition: background 0.2s; }
+    .table-row:hover { background: #f9fbe7; }
+    .table-row:last-child { border-bottom: none; }
+    .prod-img { width: 48px; height: 48px; border-radius: 8px; object-fit: cover; border: 1px solid #e8f5e9; }
+    .prod-name { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+    .prod-sku { font-size: 11px; color: #888; margin-top: 2px; }
+    .prod-cat { font-size: 12px; color: #555; }
+    .prod-price { font-size: 14px; font-weight: 700; color: #1b5e20; }
+    .prod-stock { font-size: 13px; font-weight: 600; }
+    .stock-ok { color: #2e7d32; }
+    .stock-low { color: #e65100; }
+    .stock-out { color: #e53935; }
+    .badge { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+    .badge-active { background: #e8f5e9; color: #2e7d32; }
+    .badge-inactive { background: #f5f5f5; color: #888; }
+    .action-btns { display: flex; gap: 6px; }
+    .act-btn { width: 30px; height: 30px; border-radius: 6px; border: none; cursor: pointer; font-size: 14px; transition: all 0.2s; }
+    .act-btn.edit { background: #e3f2fd; color: #1565c0; }
+    .act-btn.edit:hover { background: #1565c0; color: white; }
+    .act-btn.del { background: #ffebee; color: #c62828; }
+    .act-btn.del:hover { background: #c62828; color: white; }
+    .act-btn.view { background: #e8f5e9; color: #2e7d32; }
+    .act-btn.view:hover { background: #2e7d32; color: white; }
+    /* MODAL */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center; }
+    .modal-overlay.show { display: flex; }
+    .modal-box { background: white; border-radius: 20px; padding: 32px; max-width: 680px; width: 95%; max-height: 90vh; overflow-y: auto; }
+    .modal-box h3 { font-size: 20px; font-weight: 800; color: #1b5e20; margin-bottom: 24px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: 1/-1; }
+    .form-group label { font-size: 13px; font-weight: 600; color: #333; }
+    .form-group input, .form-group select, .form-group textarea { padding: 11px 14px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 14px; outline: none; transition: border 0.2s; font-family: inherit; }
+    .form-group input:focus, .form-group select:focus { border-color: #2e7d32; }
+    .img-upload-area { border: 2px dashed #c8e6c9; border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; background: #f9fbe7; }
+    .modal-footer { display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px; }
+    .btn-cancel { background: #f5f5f5; color: #333; border: none; padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .btn-save { background: #2e7d32; color: white; border: none; padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; }
+    .btn-save:hover { background: #1b5e20; }
+    @media (max-width: 900px) { .dash-layout { grid-template-columns: 1fr; } .sidebar { display: none; } .table-header, .table-row { grid-template-columns: 50px 1fr 80px 80px; } .table-header > *:nth-child(n+5), .table-row > *:nth-child(n+5) { display: none; } }
+  </style>
+</head>
+<body>
+<div class="dash-layout">
+  <div class="sidebar">
+    <div class="sidebar-logo"><h2>🌿 Drithi Agro</h2><span>Vendor Portal</span></div>
+    <div class="nav-item" onclick="location.href='vendor-dashboard.html'"><span class="ni">📊</span> Dashboard</div>
+    <div class="nav-item active"><span class="ni">📦</span> My Products</div>
+    <div class="nav-item"><span class="ni">🛒</span> Orders</div>
+    <div class="nav-item"><span class="ni">📈</span> Analytics</div>
+    <div class="nav-item"><span class="ni">🏪</span> Store Settings</div>
+    <div class="nav-item"><span class="ni">💰</span> Payments</div>
+    <div class="nav-item"><span class="ni">⭐</span> Reviews</div>
+    <div class="nav-item"><span class="ni">🚪</span> Logout</div>
+  </div>
+
+  <div class="main-content">
+    <div class="toolbar">
+      <h1>📦 My Products</h1>
+      <button class="add-btn" onclick="openModal()">+ Add New Product</button>
+    </div>
+
+    <div class="filter-bar">
+      <input type="text" placeholder="🔍 Search products by name or SKU..."/>
+      <select><option>All Categories</option><option>Seeds</option><option>Fertilizers</option><option>Pesticides</option><option>Organic</option></select>
+      <select><option>All Status</option><option>Active</option><option>Inactive</option></select>
+      <select><option>All Stock</option><option>In Stock</option><option>Low Stock</option><option>Out of Stock</option></select>
+    </div>
+
+    <div class="products-table">
+      <div class="table-header">
+        <div>Image</div><div>Product</div><div>Category</div><div>Price</div><div>Stock</div><div>Status</div><div>Actions</div>
+      </div>
+      <div class="table-row">
+        <img class="prod-img" src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=100&q=80" alt=""/>
+        <div><div class="prod-name">Hybrid Tomato Seeds F1 (10g)</div><div class="prod-sku">SKU: SYN-TOM-F1-10G</div></div>
+        <div class="prod-cat">Seeds</div>
+        <div class="prod-price">₹299</div>
+        <div class="prod-stock stock-ok">48 units</div>
+        <span class="badge badge-active">Active</span>
+        <div class="action-btns"><button class="act-btn view" title="View">👁</button><button class="act-btn edit" title="Edit" onclick="openModal()">✏️</button><button class="act-btn del" title="Delete" onclick="deleteRow(this)">🗑</button></div>
+      </div>
+      <div class="table-row">
+        <img class="prod-img" src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=100&q=80" alt=""/>
+        <div><div class="prod-name">NPK 19:19:19 Water Soluble Fertilizer 1kg</div><div class="prod-sku">SKU: IFFCO-NPK-1KG</div></div>
+        <div class="prod-cat">Fertilizers</div>
+        <div class="prod-price">₹185</div>
+        <div class="prod-stock stock-low">8 units</div>
+        <span class="badge badge-active">Active</span>
+        <div class="action-btns"><button class="act-btn view" title="View">👁</button><button class="act-btn edit" title="Edit" onclick="openModal()">✏️</button><button class="act-btn del" title="Delete" onclick="deleteRow(this)">🗑</button></div>
+      </div>
+      <div class="table-row">
+        <img class="prod-img" src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=100&q=80" alt=""/>
+        <div><div class="prod-name">Neem Oil 10000 PPM Bio Insecticide 1L</div><div class="prod-sku">SKU: AA-NEEM-1L</div></div>
+        <div class="prod-cat">Organic</div>
+        <div class="prod-price">₹840</div>
+        <div class="prod-stock stock-ok">32 units</div>
+        <span class="badge badge-active">Active</span>
+        <div class="action-btns"><button class="act-btn view" title="View">👁</button><button class="act-btn edit" title="Edit" onclick="openModal()">✏️</button><button class="act-btn del" title="Delete" onclick="deleteRow(this)">🗑</button></div>
+      </div>
+      <div class="table-row">
+        <img class="prod-img" src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=100&q=80" alt=""/>
+        <div><div class="prod-name">Imidacloprid 17.8% SL Insecticide 500ml</div><div class="prod-sku">SKU: BAY-IMI-500ML</div></div>
+        <div class="prod-cat">Pesticides</div>
+        <div class="prod-price">₹420</div>
+        <div class="prod-stock stock-out">0 units</div>
+        <span class="badge badge-inactive">Inactive</span>
+        <div class="action-btns"><button class="act-btn view" title="View">👁</button><button class="act-btn edit" title="Edit" onclick="openModal()">✏️</button><button class="act-btn del" title="Delete" onclick="deleteRow(this)">🗑</button></div>
+      </div>
+      <div class="table-row">
+        <img class="prod-img" src="https://images.unsplash.com/photo-1560493676-04071c5f467b?w=100&q=80" alt=""/>
+        <div><div class="prod-name">Drip Irrigation Kit for 1 Acre</div><div class="prod-sku">SKU: JI-DRIP-1AC</div></div>
+        <div class="prod-cat">Irrigation</div>
+        <div class="prod-price">₹3,499</div>
+        <div class="prod-stock stock-low">3 units</div>
+        <span class="badge badge-active">Active</span>
+        <div class="action-btns"><button class="act-btn view" title="View">👁</button><button class="act-btn edit" title="Edit" onclick="openModal()">✏️</button><button class="act-btn del" title="Delete" onclick="deleteRow(this)">🗑</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD/EDIT PRODUCT MODAL -->
+<div class="modal-overlay" id="productModal">
+  <div class="modal-box">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <h3>➕ Add New Product</h3>
+      <button onclick="closeModal()" style="background:none;border:none;font-size:22px;cursor:pointer;">✕</button>
+    </div>
+    <div class="form-grid">
+      <div class="form-group full"><label>Product Name *</label><input type="text" placeholder="Enter product name"/></div>
+      <div class="form-group"><label>Category *</label>
+        <select><option>Seeds</option><option>Fertilizers</option><option>Pesticides</option><option>Organic</option><option>Irrigation</option><option>Farm Tools</option></select>
+      </div>
+      <div class="form-group"><label>Brand</label><input type="text" placeholder="Brand name"/></div>
+      <div class="form-group"><label>SKU</label><input type="text" placeholder="Unique product code"/></div>
+      <div class="form-group"><label>MRP (₹) *</label><input type="number" placeholder="0.00"/></div>
+      <div class="form-group"><label>Selling Price (₹) *</label><input type="number" placeholder="0.00"/></div>
+      <div class="form-group"><label>Stock Quantity *</label><input type="number" placeholder="0"/></div>
+      <div class="form-group"><label>Unit</label>
+        <select><option>Piece</option><option>Kg</option><option>Gram</option><option>Litre</option><option>ML</option><option>Set</option></select>
+      </div>
+      <div class="form-group full"><label>Description *</label><textarea rows="3" placeholder="Detailed product description..."></textarea></div>
+      <div class="form-group full">
+        <label>Product Images (Max 5)</label>
+        <div class="img-upload-area" onclick="document.getElementById('prodImages').click()">
+          <input type="file" id="prodImages" multiple accept=".jpg,.png" style="display:none"/>
+          <div style="font-size:32px;margin-bottom:8px;">📸</div>
+          <p style="font-size:13px;color:#888;">Click to upload product images (JPG/PNG, max 5MB each)</p>
+        </div>
+      </div>
+      <div class="form-group"><label>HSN Code</label><input type="text" placeholder="HSN code for GST"/></div>
+      <div class="form-group"><label>GST Rate (%)</label>
+        <select><option>0%</option><option>5%</option><option>12%</option><option>18%</option><option>28%</option></select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" onclick="saveProduct()">💾 Save Product</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openModal() { document.getElementById('productModal').classList.add('show'); }
+  function closeModal() { document.getElementById('productModal').classList.remove('show'); }
+  function saveProduct() { closeModal(); alert('✅ Product saved successfully!'); }
+  function deleteRow(btn) {
+    if (confirm('Delete this product?')) btn.closest('.table-row').remove();
+  }
+</script>
+</body>
+</html>

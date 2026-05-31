@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login / Sign Up - Drithi Agro</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/auth.css"/>
+</head>
+<body>
+
+<div class="auth-page">
+
+  <!-- LEFT PANEL -->
+  <div class="auth-left">
+    <div class="auth-left-content">
+      <div class="big-icon">🌾</div>
+      <h2>Welcome to<br/>Drithi Agro</h2>
+      <p>India's most trusted platform for farmers. Get quality seeds, fertilizers, and farm tools delivered to your doorstep.</p>
+      <div class="auth-features">
+        <div class="auth-feature">
+          <span class="feat-icon">🚚</span>
+          <div><h4>Free Delivery</h4><p>On orders above ₹499 across India</p></div>
+        </div>
+        <div class="auth-feature">
+          <span class="feat-icon">✅</span>
+          <div><h4>100% Genuine</h4><p>Verified products from top brands</p></div>
+        </div>
+        <div class="auth-feature">
+          <span class="feat-icon">🧑🌾</span>
+          <div><h4>Expert Support</h4><p>Free agri-expert consultation 24/7</p></div>
+        </div>
+        <div class="auth-feature">
+          <span class="feat-icon">💰</span>
+          <div><h4>Best Prices</h4><p>Exclusive deals for registered farmers</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="auth-right">
+    <div class="auth-box">
+
+      <div class="auth-logo">
+        <div class="logo-icon">🌿</div>
+        <div>
+          <h2>Drithi Agro</h2>
+          <span>Farm to Future</span>
+        </div>
+      </div>
+
+      <!-- TABS -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="loginTab" onclick="switchTab('login')">Login</button>
+        <button class="auth-tab" id="signupTab" onclick="switchTab('signup')">Sign Up</button>
+      </div>
+
+      <!-- STEP INDICATOR -->
+      <div class="step-indicator" id="stepIndicator">
+        <div class="step active" id="step1">1</div>
+        <div class="step-line" id="line1"></div>
+        <div class="step" id="step2">2</div>
+        <div class="step-line" id="line2" style="display:none"></div>
+        <div class="step" id="step3" style="display:none">3</div>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <div id="loginSection">
+        <!-- Step 1: Phone -->
+        <div id="loginStep1">
+          <div class="auth-form">
+            <div class="form-group">
+              <label>📱 Mobile Number</label>
+              <div class="phone-input">
+                <span class="country-code">🇮🇳 +91</span>
+                <input type="tel" id="loginPhone" placeholder="Enter 10-digit mobile number" maxlength="10"/>
+              </div>
+            </div>
+            <button class="submit-btn" onclick="sendLoginOTP()">Send OTP →</button>
+            <p style="text-align:center;font-size:12px;color:#999;margin-top:8px;">
+              By continuing, you agree to our <a href="#" style="color:#2e7d32;">Terms</a> & <a href="#" style="color:#2e7d32;">Privacy Policy</a>
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 2: OTP -->
+        <div id="loginStep2" style="display:none">
+          <div class="auth-form">
+            <div class="form-group">
+              <label style="text-align:center;display:block;">Enter OTP sent to <b id="loginPhoneDisplay"></b></label>
+              <div class="otp-group">
+                <input class="otp-input" maxlength="1" oninput="otpNext(this,0,'login')" id="lotp0"/>
+                <input class="otp-input" maxlength="1" oninput="otpNext(this,1,'login')" id="lotp1"/>
+                <input class="otp-input" maxlength="1" oninput="otpNext(this,2,'login')" id="lotp2"/>
+                <input class="otp-input" maxlength="1" oninput="otpNext(this,3,'login')" id="lotp3"/>
+              </div>
+            </div>
+            <div class="otp-timer" id="loginTimer">Resend OTP in <b id="loginCountdown">30</b>s</div>
+            <button class="submit-btn" onclick="verifyLoginOTP()">✅ Verify & Login</button>
+            <button onclick="switchStep('login',1)" style="background:none;border:none;color:#2e7d32;font-size:13px;cursor:pointer;text-align:center;width:100%;margin-top:8px;">← Change Number</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIGNUP FORM -->
+      <div id="signupSection" style="display:none">
+        <!-- Step 1: Details -->
+        <div id="signupStep1">
+          <div class="auth-form">
+            <div class="form-group">
+              <label>👤 Full Name</label>
+              <input type="text" id="signupName" placeholder="Enter your full name"/>
+            </div>
+            <div class="form-group">
+              <label>📱 Mobile Number</label>
+              <div class="phone-input">
+                <span class="country-code">🇮🇳 +91</span>
+                <input type="tel" id="signupPhone" placeholder="10-digit mobile number" maxlength="10"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>📍 Place / Village</label>
+              <input type="text" id="signupPlace" placeholder="Your village, town or city"/>
+            </div>
+            <div class="form-group">
+              <label>🗺️ State</label>
+              <select id="signupState">
+                <option value="">Select your state</option>
+                <option>Andhra Pradesh</option><option>Assam</option><option>Bihar</option>
+                <option>Gujarat</option><option>Haryana</option><option>Karnataka</option>
+                <option>Kerala</option><option>Madhya Pradesh</option><option>Maharashtra</option>
+                <option>Odisha</option><option>Punjab</option><option>Rajasthan</option>
+                <option>Tamil Nadu</option><option>Telangana</option><option>Uttar Pradesh</option>
+                <option>West Bengal</option><option>Other</option>
+              </select>
+            </div>
+            <button class="submit-btn" onclick="sendSignupOTP()">Send OTP →</button>
+          </div>
+        </div>
+
+        <!-- Step 2: OTP -->
+        <div id="signupStep2" style="display:none">
+          <div class="auth-form">
+            <div class="form-group">
+              <label style="text-align:center;display:block;">Enter OTP sent to <b id="signupPhoneDisplay"></b></label>
+              <div class="otp-group">
+                <input class="otp-input" maxlength="1" oninput="otpNext(this,0,'signup')" id="sotp0"/>
+                <input class="otp-input" maxlength="1" oninput="otpNext(this,1,'signup')" id="sotp1"/>
+                <input class="otp-input" maxlength="1" oninput="otpNext(this,2,'signup')" id="sotp2"/>
+                <input class="otp-input" maxlength="1" oninput="otpNext(this,3,'signup')" id="sotp3"/>
+              </div>
+            </div>
+            <div class="otp-timer" id="signupTimer">Resend OTP in <b id="signupCountdown">30</b>s</div>
+            <button class="submit-btn" onclick="verifySignupOTP()">✅ Create Account</button>
+            <button onclick="switchStep('signup',1)" style="background:none;border:none;color:#2e7d32;font-size:13px;cursor:pointer;text-align:center;width:100%;margin-top:8px;">← Go Back</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Success -->
+        <div id="signupStep3" style="display:none">
+          <div class="success-screen" style="display:block">
+            <div class="check">🎉</div>
+            <h3>Welcome to Drithi Agro!</h3>
+            <p id="welcomeMsg">Your account has been created successfully.</p>
+            <button class="submit-btn" onclick="location.href='../index.html'">🏠 Go to Home</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  let activeTab = 'login';
+  let timers = {};
+
+  function switchTab(tab) {
+    activeTab = tab;
+    document.getElementById('loginSection').style.display = tab === 'login' ? 'block' : 'none';
+    document.getElementById('signupSection').style.display = tab === 'signup' ? 'block' : 'none';
+    document.getElementById('loginTab').classList.toggle('active', tab === 'login');
+    document.getElementById('signupTab').classList.toggle('active', tab === 'signup');
+    updateSteps(tab === 'login' ? 2 : 3, 1);
+  }
+
+  function updateSteps(total, current) {
+    document.getElementById('line2').style.display = total === 3 ? 'flex' : 'none';
+    document.getElementById('step3').style.display = total === 3 ? 'flex' : 'none';
+    [1,2,3].forEach(i => {
+      const s = document.getElementById('step'+i);
+      if (s) {
+        s.className = 'step' + (i < current ? ' done' : i === current ? ' active' : '');
+      }
+      if (i < 3) {
+        const l = document.getElementById('line'+i);
+        if (l) l.className = 'step-line' + (i < current ? ' done' : '');
+      }
+    });
+  }
+
+  function switchStep(type, step) {
+    if (type === 'login') {
+      document.getElementById('loginStep1').style.display = step === 1 ? 'block' : 'none';
+      document.getElementById('loginStep2').style.display = step === 2 ? 'block' : 'none';
+      updateSteps(2, step);
+    } else {
+      [1,2,3].forEach(i => {
+        document.getElementById('signupStep'+i).style.display = i === step ? 'block' : 'none';
+      });
+      updateSteps(3, step);
+    }
+  }
+
+  function validatePhone(id) {
+    const v = document.getElementById(id).value;
+    if (!/^[6-9]\d{9}$/.test(v)) { alert('Please enter a valid 10-digit Indian mobile number.'); return false; }
+    return true;
+  }
+
+  function sendLoginOTP() {
+    if (!validatePhone('loginPhone')) return;
+    const ph = document.getElementById('loginPhone').value;
+    document.getElementById('loginPhoneDisplay').textContent = '+91 ' + ph;
+    switchStep('login', 2);
+    startTimer('loginCountdown', 'loginTimer');
+    document.getElementById('lotp0').focus();
+  }
+
+  function sendSignupOTP() {
+    const name = document.getElementById('signupName').value.trim();
+    const place = document.getElementById('signupPlace').value.trim();
+    const state = document.getElementById('signupState').value;
+    if (!name) { alert('Please enter your name.'); return; }
+    if (!validatePhone('signupPhone')) return;
+    if (!place) { alert('Please enter your place/village.'); return; }
+    if (!state) { alert('Please select your state.'); return; }
+    const ph = document.getElementById('signupPhone').value;
+    document.getElementById('signupPhoneDisplay').textContent = '+91 ' + ph;
+    switchStep('signup', 2);
+    startTimer('signupCountdown', 'signupTimer');
+    document.getElementById('sotp0').focus();
+  }
+
+  function verifyLoginOTP() {
+    const otp = [0,1,2,3].map(i => document.getElementById('lotp'+i).value).join('');
+    if (otp.length < 4) { alert('Please enter the complete 4-digit OTP.'); return; }
+    // Simulate OTP verification
+    alert('✅ Login successful! Welcome back to Drithi Agro.');
+    location.href = '../index.html';
+  }
+
+  function verifySignupOTP() {
+    const otp = [0,1,2,3].map(i => document.getElementById('sotp'+i).value).join('');
+    if (otp.length < 4) { alert('Please enter the complete 4-digit OTP.'); return; }
+    const name = document.getElementById('signupName').value;
+    document.getElementById('welcomeMsg').textContent = `Hello ${name}! Your account has been created successfully. Happy farming! 🌾`;
+    switchStep('signup', 3);
+    updateSteps(3, 3);
+  }
+
+  function otpNext(el, idx, type) {
+    const prefix = type === 'login' ? 'lotp' : 'sotp';
+    if (el.value && idx < 3) document.getElementById(prefix+(idx+1)).focus();
+  }
+
+  function startTimer(countdownId, timerId) {
+    let sec = 30;
+    clearInterval(timers[countdownId]);
+    timers[countdownId] = setInterval(() => {
+      document.getElementById(countdownId).textContent = --sec;
+      if (sec <= 0) {
+        clearInterval(timers[countdownId]);
+        document.getElementById(timerId).innerHTML = '<span onclick="resendOTP()">Resend OTP</span>';
+      }
+    }, 1000);
+  }
+
+  function resendOTP() { alert('OTP resent!'); startTimer('loginCountdown','loginTimer'); }
+</script>
+</body>
+</html>

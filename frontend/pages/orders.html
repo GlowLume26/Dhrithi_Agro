@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Orders - Drithi Agro</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <style>
+    .orders-page { max-width: 900px; margin: 0 auto; padding: 30px 40px; }
+    .orders-page h1 { font-size: 26px; font-weight: 800; color: #1b5e20; margin-bottom: 24px; }
+    .order-filter { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
+    .of-btn { padding: 8px 18px; border-radius: 20px; border: 2px solid #e0e0e0; background: white; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; color: #666; }
+    .of-btn.active, .of-btn:hover { background: #2e7d32; color: white; border-color: #2e7d32; }
+    .order-card { background: white; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); margin-bottom: 16px; overflow: hidden; }
+    .order-card-header { background: #f9fbe7; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; border-bottom: 1px solid #e8f5e9; }
+    .order-id { font-size: 13px; font-weight: 700; color: #1b5e20; }
+    .order-date { font-size: 12px; color: #888; }
+    .order-status { padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+    .status-delivered { background: #e8f5e9; color: #2e7d32; }
+    .status-shipped { background: #e3f2fd; color: #1565c0; }
+    .status-processing { background: #fff3e0; color: #e65100; }
+    .status-cancelled { background: #ffebee; color: #c62828; }
+    .order-items { padding: 16px 20px; }
+    .order-item-row { display: flex; gap: 14px; align-items: center; padding: 10px 0; border-bottom: 1px solid #f5f5f5; }
+    .order-item-row:last-child { border-bottom: none; }
+    .order-item-row img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; border: 1px solid #e8f5e9; }
+    .order-item-row h5 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+    .order-item-row span { font-size: 12px; color: #888; }
+    .order-item-row .item-price { margin-left: auto; font-size: 14px; font-weight: 700; color: #1b5e20; }
+    .order-card-footer { padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; border-top: 1px solid #f0f0f0; }
+    .order-total { font-size: 16px; font-weight: 800; color: #1b5e20; }
+    .order-actions { display: flex; gap: 10px; }
+    .oa-btn { padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; border: 2px solid; }
+    .oa-btn.primary { background: #2e7d32; color: white; border-color: #2e7d32; }
+    .oa-btn.primary:hover { background: #1b5e20; }
+    .oa-btn.outline { background: white; color: #2e7d32; border-color: #2e7d32; }
+    .oa-btn.outline:hover { background: #e8f5e9; }
+    .oa-btn.danger { background: white; color: #e53935; border-color: #e53935; }
+    .oa-btn.danger:hover { background: #ffebee; }
+    .tracking-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center; }
+    .tracking-modal.show { display: flex; }
+    .tracking-box { background: white; border-radius: 20px; padding: 32px; max-width: 480px; width: 90%; }
+    .tracking-box h3 { font-size: 18px; font-weight: 800; color: #1b5e20; margin-bottom: 20px; }
+    .track-step { display: flex; gap: 14px; margin-bottom: 0; }
+    .track-left { display: flex; flex-direction: column; align-items: center; }
+    .track-dot { width: 16px; height: 16px; border-radius: 50%; background: #e0e0e0; flex-shrink: 0; }
+    .track-dot.done { background: #2e7d32; }
+    .track-dot.active { background: #f9a825; box-shadow: 0 0 0 4px rgba(249,168,37,0.3); }
+    .track-line { width: 2px; flex: 1; background: #e0e0e0; min-height: 30px; }
+    .track-line.done { background: #2e7d32; }
+    .track-info { padding-bottom: 24px; }
+    .track-info h5 { font-size: 14px; font-weight: 700; color: #333; }
+    .track-info p { font-size: 12px; color: #888; margin-top: 2px; }
+  </style>
+</head>
+<body>
+<div id="header-root"></div>
+
+<div style="background:#f5f5f5;padding:12px 40px;font-size:13px;color:#666;">
+  <a href="../index.html" style="color:#2e7d32;">Home</a> › My Orders
+</div>
+
+<div class="orders-page">
+  <h1>📦 My Orders</h1>
+
+  <div class="order-filter">
+    <button class="of-btn active">All Orders</button>
+    <button class="of-btn">Processing</button>
+    <button class="of-btn">Shipped</button>
+    <button class="of-btn">Delivered</button>
+    <button class="of-btn">Cancelled</button>
+  </div>
+
+  <!-- ORDER 1 -->
+  <div class="order-card">
+    <div class="order-card-header">
+      <div>
+        <div class="order-id">Order #DA-2025-78432</div>
+        <div class="order-date">Placed on 15 Jan 2025 • 3 items</div>
+      </div>
+      <span class="order-status status-shipped">🚚 Shipped</span>
+    </div>
+    <div class="order-items">
+      <div class="order-item-row">
+        <img src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=200&q=80" alt=""/>
+        <div><h5>Hybrid Tomato Seeds F1 (10g)</h5><span>Qty: 2 • Syngenta</span></div>
+        <span class="item-price">₹598</span>
+      </div>
+      <div class="order-item-row">
+        <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=200&q=80" alt=""/>
+        <div><h5>NPK 19:19:19 Fertilizer 1kg</h5><span>Qty: 1 • IFFCO</span></div>
+        <span class="item-price">₹185</span>
+      </div>
+    </div>
+    <div class="order-card-footer">
+      <div>
+        <div class="order-total">Total: ₹783</div>
+        <div style="font-size:12px;color:#2e7d32;font-weight:600;">Expected: 17 Jan 2025</div>
+      </div>
+      <div class="order-actions">
+        <button class="oa-btn primary" onclick="showTracking()">📍 Track Order</button>
+        <button class="oa-btn outline">🔄 Return</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDER 2 -->
+  <div class="order-card">
+    <div class="order-card-header">
+      <div>
+        <div class="order-id">Order #DA-2025-71205</div>
+        <div class="order-date">Placed on 8 Jan 2025 • 1 item</div>
+      </div>
+      <span class="order-status status-delivered">✅ Delivered</span>
+    </div>
+    <div class="order-items">
+      <div class="order-item-row">
+        <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=200&q=80" alt=""/>
+        <div><h5>Neem Oil 10000 PPM Bio Insecticide 1L</h5><span>Qty: 1 • Anand Agro</span></div>
+        <span class="item-price">₹840</span>
+      </div>
+    </div>
+    <div class="order-card-footer">
+      <div>
+        <div class="order-total">Total: ₹840</div>
+        <div style="font-size:12px;color:#888;">Delivered on 10 Jan 2025</div>
+      </div>
+      <div class="order-actions">
+        <button class="oa-btn primary">⭐ Rate Product</button>
+        <button class="oa-btn outline">🔄 Buy Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDER 3 -->
+  <div class="order-card">
+    <div class="order-card-header">
+      <div>
+        <div class="order-id">Order #DA-2024-65890</div>
+        <div class="order-date">Placed on 20 Dec 2024 • 2 items</div>
+      </div>
+      <span class="order-status status-delivered">✅ Delivered</span>
+    </div>
+    <div class="order-items">
+      <div class="order-item-row">
+        <img src="https://images.unsplash.com/photo-1560493676-04071c5f467b?w=200&q=80" alt=""/>
+        <div><h5>Drip Irrigation Kit for 1 Acre</h5><span>Qty: 1 • Jain Irrigation</span></div>
+        <span class="item-price">₹3,499</span>
+      </div>
+    </div>
+    <div class="order-card-footer">
+      <div>
+        <div class="order-total">Total: ₹3,499</div>
+        <div style="font-size:12px;color:#888;">Delivered on 23 Dec 2024</div>
+      </div>
+      <div class="order-actions">
+        <button class="oa-btn primary">⭐ Rate Product</button>
+        <button class="oa-btn outline">🔄 Buy Again</button>
+        <button class="oa-btn danger">🔄 Return</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TRACKING MODAL -->
+<div class="tracking-modal" id="trackingModal">
+  <div class="tracking-box">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <h3>📍 Order Tracking</h3>
+      <button onclick="closeTracking()" style="background:none;border:none;font-size:20px;cursor:pointer;">✕</button>
+    </div>
+    <div style="background:#e8f5e9;border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:13px;">
+      <b>Order #DA-2025-78432</b> • Expected: <b style="color:#2e7d32;">17 Jan 2025</b>
+    </div>
+    <div>
+      <div class="track-step">
+        <div class="track-left"><div class="track-dot done"></div><div class="track-line done"></div></div>
+        <div class="track-info"><h5>✅ Order Placed</h5><p>15 Jan 2025, 2:30 PM</p></div>
+      </div>
+      <div class="track-step">
+        <div class="track-left"><div class="track-dot done"></div><div class="track-line done"></div></div>
+        <div class="track-info"><h5>✅ Order Confirmed</h5><p>15 Jan 2025, 3:00 PM</p></div>
+      </div>
+      <div class="track-step">
+        <div class="track-left"><div class="track-dot done"></div><div class="track-line done"></div></div>
+        <div class="track-info"><h5>✅ Packed & Ready</h5><p>15 Jan 2025, 6:00 PM</p></div>
+      </div>
+      <div class="track-step">
+        <div class="track-left"><div class="track-dot active"></div><div class="track-line"></div></div>
+        <div class="track-info"><h5>🚚 Out for Delivery</h5><p>16 Jan 2025, 9:00 AM — In Transit</p></div>
+      </div>
+      <div class="track-step">
+        <div class="track-left"><div class="track-dot"></div></div>
+        <div class="track-info"><h5>📦 Delivered</h5><p>Expected: 17 Jan 2025</p></div>
+      </div>
+    </div>
+    <button onclick="closeTracking()" style="width:100%;background:#2e7d32;color:white;border:none;padding:12px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;margin-top:16px;">Close</button>
+  </div>
+</div>
+
+<div id="footer-root"></div>
+<script src="../js/components.js"></script>
+<script>
+  document.getElementById('header-root').innerHTML = renderHeader('');
+  document.getElementById('footer-root').innerHTML = renderFooter();
+
+  document.querySelectorAll('.of-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.of-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+  function showTracking() { document.getElementById('trackingModal').classList.add('show'); }
+  function closeTracking() { document.getElementById('trackingModal').classList.remove('show'); }
+</script>
+</body>
+</html>

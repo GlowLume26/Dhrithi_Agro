@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us - Drithi Agro</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <style>
+    .about-hero { background: linear-gradient(135deg, #1b5e20, #2e7d32); padding: 80px 40px; color: white; text-align: center; position: relative; overflow: hidden; }
+    .about-hero::before { content: ''; position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1400&q=80') center/cover; opacity: 0.15; }
+    .about-hero-content { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
+    .about-hero h1 { font-size: 48px; font-weight: 900; margin-bottom: 16px; }
+    .about-hero p { font-size: 18px; opacity: 0.9; line-height: 1.7; }
+    .about-section { padding: 70px 40px; max-width: 1100px; margin: 0 auto; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .about-grid.reverse { direction: rtl; }
+    .about-grid.reverse > * { direction: ltr; }
+    .about-img { border-radius: 20px; overflow: hidden; height: 380px; }
+    .about-img img { width: 100%; height: 100%; object-fit: cover; }
+    .about-text h2 { font-size: 34px; font-weight: 900; color: #1b5e20; margin-bottom: 16px; line-height: 1.2; }
+    .about-text p { font-size: 15px; color: #555; line-height: 1.8; margin-bottom: 16px; }
+    .about-text ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .about-text ul li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: #444; }
+    .about-text ul li::before { content: '✅'; flex-shrink: 0; }
+    .mission-section { background: #f9fbe7; padding: 70px 40px; }
+    .mission-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1100px; margin: 0 auto; }
+    .mission-card { background: white; border-radius: 16px; padding: 32px 24px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+    .mission-card .mc-icon { font-size: 48px; margin-bottom: 16px; }
+    .mission-card h3 { font-size: 20px; font-weight: 800; color: #1b5e20; margin-bottom: 10px; }
+    .mission-card p { font-size: 14px; color: #666; line-height: 1.7; }
+    .team-section { padding: 70px 40px; max-width: 1100px; margin: 0 auto; }
+    .team-section h2 { font-size: 34px; font-weight: 900; color: #1b5e20; text-align: center; margin-bottom: 10px; }
+    .team-section .sub { text-align: center; color: #888; font-size: 15px; margin-bottom: 40px; }
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px; }
+    .team-card { background: white; border-radius: 16px; padding: 24px; text-align: center; box-shadow: 0 4px 16px rgba(0,0,0,0.07); }
+    .team-avatar { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #2e7d32, #4caf50); color: white; font-size: 28px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
+    .team-card h4 { font-size: 16px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px; }
+    .team-card .role { font-size: 13px; color: #2e7d32; font-weight: 600; margin-bottom: 8px; }
+    .team-card p { font-size: 12px; color: #888; line-height: 1.5; }
+    .stats-section { background: linear-gradient(135deg, #1b5e20, #2e7d32); padding: 60px 40px; color: white; }
+    .stats-inner { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; max-width: 1100px; margin: 0 auto; text-align: center; }
+    .stats-inner .sv { font-size: 36px; font-weight: 900; }
+    .stats-inner .sl { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+    @media (max-width: 900px) { .about-grid { grid-template-columns: 1fr; } .mission-grid { grid-template-columns: 1fr; } .stats-inner { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .about-hero h1 { font-size: 32px; } .about-section { padding: 40px 20px; } }
+  </style>
+</head>
+<body>
+<div id="header-root"></div>
+
+<div class="about-hero">
+  <div class="about-hero-content">
+    <h1>🌾 About Drithi Agro</h1>
+    <p>We're on a mission to transform Indian agriculture by connecting farmers directly with quality inputs, expert knowledge, and fair markets.</p>
+  </div>
+</div>
+
+<!-- OUR STORY -->
+<div class="about-section">
+  <div class="about-grid">
+    <div class="about-img"><img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800&q=80" alt="Our Story"/></div>
+    <div class="about-text">
+      <h2>Our Story</h2>
+      <p>Drithi Agro was founded in 2022 with a simple but powerful vision — to make quality agricultural inputs accessible to every farmer in India, regardless of their location or farm size.</p>
+      <p>We saw farmers struggling with counterfeit products, inflated prices, and lack of expert guidance. We decided to build a platform that solves all three problems at once.</p>
+      <ul>
+        <li>Founded by a team of agri-tech enthusiasts and farmers</li>
+        <li>Headquartered in Pune, Maharashtra with pan-India operations</li>
+        <li>Backed by leading agri-tech investors</li>
+        <li>Serving 5 lakh+ farmers across 28 states</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-section">
+  <div class="stats-inner">
+    <div><div class="sv">5L+</div><div class="sl">Happy Farmers</div></div>
+    <div><div class="sv">10,000+</div><div class="sl">Products Listed</div></div>
+    <div><div class="sv">1,200+</div><div class="sl">Verified Vendors</div></div>
+    <div><div class="sv">28</div><div class="sl">States Covered</div></div>
+    <div><div class="sv">4.8★</div><div class="sl">Average Rating</div></div>
+  </div>
+</div>
+
+<!-- MISSION, VISION, VALUES -->
+<div class="mission-section">
+  <div style="text-align:center;margin-bottom:40px;">
+    <h2 style="font-size:34px;font-weight:900;color:#1b5e20;">Our Mission, Vision & Values</h2>
+    <div style="width:60px;height:4px;background:#f9a825;margin:12px auto 0;border-radius:2px;"></div>
+  </div>
+  <div class="mission-grid">
+    <div class="mission-card">
+      <div class="mc-icon">🎯</div>
+      <h3>Our Mission</h3>
+      <p>To empower every Indian farmer with access to genuine, affordable agricultural inputs and expert knowledge to maximize their yield and income.</p>
+    </div>
+    <div class="mission-card">
+      <div class="mc-icon">🔭</div>
+      <h3>Our Vision</h3>
+      <p>To become India's most trusted agri-commerce platform, transforming the agricultural supply chain from farm to future.</p>
+    </div>
+    <div class="mission-card">
+      <div class="mc-icon">💎</div>
+      <h3>Our Values</h3>
+      <p>Transparency, quality, farmer-first approach, innovation, and sustainability are the core values that drive everything we do at Drithi Agro.</p>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT WE OFFER -->
+<div class="about-section">
+  <div class="about-grid reverse">
+    <div class="about-img"><img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800&q=80" alt="What We Offer"/></div>
+    <div class="about-text">
+      <h2>What We Offer</h2>
+      <p>Drithi Agro is a complete ecosystem for Indian agriculture — not just a marketplace, but a partner in your farming journey.</p>
+      <ul>
+        <li>10,000+ genuine products from 500+ verified brands</li>
+        <li>OTP-based simple login — no passwords needed</li>
+        <li>Free delivery on orders above ₹499</li>
+        <li>24/7 agri-expert helpline for crop consultation</li>
+        <li>Easy 7-day return & replacement policy</li>
+        <li>Secure Razorpay payment gateway</li>
+        <li>Real-time order tracking</li>
+        <li>Vendor marketplace for agri-businesses</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- TEAM -->
+<div class="team-section">
+  <h2>Meet Our Team</h2>
+  <p class="sub">Passionate people building the future of Indian agriculture</p>
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-avatar">A</div>
+      <h4>Arjun Mehta</h4>
+      <div class="role">CEO & Co-Founder</div>
+      <p>10+ years in agri-tech. Former IIT Bombay. Passionate about farmer welfare.</p>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">P</div>
+      <h4>Priya Nair</h4>
+      <div class="role">CTO & Co-Founder</div>
+      <p>Full-stack engineer. Built platforms serving millions of users across India.</p>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">S</div>
+      <h4>Suresh Reddy</h4>
+      <div class="role">Head of Agronomy</div>
+      <p>PhD in Agricultural Sciences. 15+ years of crop research experience.</p>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">M</div>
+      <h4>Meera Joshi</h4>
+      <div class="role">Head of Operations</div>
+      <p>Supply chain expert. Manages logistics across 28 states seamlessly.</p>
+    </div>
+  </div>
+</div>
+
+<div id="footer-root"></div>
+<script src="../js/components.js"></script>
+<script>
+  document.getElementById('header-root').innerHTML = renderHeader('');
+  document.getElementById('footer-root').innerHTML = renderFooter();
+</script>
+</body>
+</html>
