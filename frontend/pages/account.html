@@ -7,11 +7,25 @@
   <link rel="stylesheet" href="../css/style.css"/>
   <style>
     body { background: #f0f4f0; }
+
+    /* ── Not logged in ── */
+    .login-prompt {
+      max-width: 480px; margin: 60px auto; background: white;
+      border-radius: 20px; padding: 50px 40px; text-align: center;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.09);
+    }
+    .login-prompt .lp-icon { font-size: 64px; margin-bottom: 16px; }
+    .login-prompt h2 { font-size: 24px; font-weight: 800; color: #1b5e20; margin-bottom: 10px; }
+    .login-prompt p  { font-size: 14px; color: #666; margin-bottom: 28px; line-height: 1.6; }
+    .lp-btn { display: inline-block; background: #2e7d32; color: white; padding: 14px 36px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: none; margin: 6px; }
+    .lp-btn.outline { background: white; color: #2e7d32; border: 2px solid #2e7d32; }
+
+    /* ── Account layout ── */
     .account-layout { display: grid; grid-template-columns: 260px 1fr; gap: 24px; padding: 30px 40px; max-width: 1200px; margin: 0 auto; }
     .account-sidebar { display: flex; flex-direction: column; gap: 16px; }
     .profile-card { background: white; border-radius: 14px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); text-align: center; }
-    .profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #2e7d32, #4caf50); color: white; font-size: 32px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
-    .profile-name { font-size: 18px; font-weight: 800; color: #1a1a1a; }
+    .profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg,#2e7d32,#4caf50); color: white; font-size: 32px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
+    .profile-name  { font-size: 18px; font-weight: 800; color: #1a1a1a; }
     .profile-phone { font-size: 13px; color: #888; margin-top: 4px; }
     .profile-since { font-size: 12px; color: #2e7d32; font-weight: 600; margin-top: 6px; }
     .sidebar-nav { background: white; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); overflow: hidden; }
@@ -26,128 +40,341 @@
     .form-group { display: flex; flex-direction: column; gap: 6px; }
     .form-group.full { grid-column: 1/-1; }
     .form-group label { font-size: 13px; font-weight: 600; color: #333; }
-    .form-group input, .form-group select, .form-group textarea { padding: 11px 14px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 14px; outline: none; transition: border 0.2s; font-family: inherit; }
+    .form-group input, .form-group select { padding: 11px 14px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 14px; outline: none; transition: border 0.2s; font-family: inherit; }
     .form-group input:focus, .form-group select:focus { border-color: #2e7d32; }
+    .form-group input[readonly] { background: #f5f5f5; cursor: not-allowed; }
     .save-btn { background: #2e7d32; color: white; border: none; padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 8px; }
     .save-btn:hover { background: #1b5e20; }
-    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
     .mini-stat { background: #f9fbe7; border-radius: 12px; padding: 16px; text-align: center; }
     .mini-stat .ms-val { font-size: 22px; font-weight: 900; color: #1b5e20; }
     .mini-stat .ms-lbl { font-size: 12px; color: #888; margin-top: 4px; }
-    .address-card { border: 2px solid #e0e0e0; border-radius: 12px; padding: 16px; margin-bottom: 12px; position: relative; }
+    .address-card { border: 2px solid #e0e0e0; border-radius: 12px; padding: 16px; margin-bottom: 12px; }
     .address-card.default { border-color: #2e7d32; background: #f9fbe7; }
     .address-card h5 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
-    .address-card p { font-size: 13px; color: #666; line-height: 1.5; }
+    .address-card p  { font-size: 13px; color: #666; line-height: 1.5; }
     .addr-tag { display: inline-block; background: #e8f5e9; color: #2e7d32; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; margin-bottom: 6px; }
     .addr-actions { display: flex; gap: 8px; margin-top: 10px; }
     .addr-btn { padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; }
-    .addr-btn.edit { background: #e3f2fd; color: #1565c0; }
-    .addr-btn.del { background: #ffebee; color: #c62828; }
-    .addr-btn.default-btn { background: #e8f5e9; color: #2e7d32; }
-    @media (max-width: 900px) { .account-layout { grid-template-columns: 1fr; } .account-sidebar { display: none; } .stats-row { grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 500px) { .form-grid { grid-template-columns: 1fr; } }
+    .addr-btn.edit    { background: #e3f2fd; color: #1565c0; }
+    .addr-btn.del     { background: #ffebee; color: #c62828; }
+    .addr-btn.def-btn { background: #e8f5e9; color: #2e7d32; }
+    .save-msg { display:none; padding: 10px 14px; border-radius: 10px; font-size: 13px; font-weight: 600; margin-top: 10px; background: #e8f5e9; color: #1b5e20; }
+    .skeleton { background: #e0e0e0; border-radius: 6px; animation: pulse 1.2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    @media (max-width:900px) { .account-layout { grid-template-columns:1fr; } .stats-row { grid-template-columns:1fr 1fr; } }
+    @media (max-width:500px) { .form-grid { grid-template-columns:1fr; } .account-layout { padding: 16px; } }
   </style>
 </head>
 <body>
 <div id="header-root"></div>
 
-<div style="background:#f5f5f5;padding:12px 40px;font-size:13px;color:#666;">
-  <a href="../index.html" style="color:#2e7d32;">Home</a> › My Account
+<!-- ── NOT LOGGED IN ── -->
+<div id="notLoggedIn" style="display:none; padding: 20px;">
+  <div class="login-prompt">
+    <div class="lp-icon">👤</div>
+    <h2>Login to Your Account</h2>
+    <p>Please login or create an account to view your profile, orders, wishlist and more.</p>
+    <a href="login.html" class="lp-btn">🔐 Login</a>
+    <a href="login.html" class="lp-btn outline" onclick="localStorage.setItem('authTab','signup')">📝 Sign Up</a>
+  </div>
 </div>
 
-<div class="account-layout">
-  <!-- SIDEBAR -->
-  <div class="account-sidebar">
-    <div class="profile-card">
-      <div class="profile-avatar">R</div>
-      <div class="profile-name">Ramesh Patil</div>
-      <div class="profile-phone">📱 +91 98765 43210</div>
-      <div class="profile-since">🌾 Member since Jan 2024</div>
-    </div>
-    <div class="sidebar-nav">
-      <div class="nav-item active"><span class="ni">👤</span> My Profile</div>
-      <div class="nav-item" onclick="location.href='orders.html'"><span class="ni">📦</span> My Orders</div>
-      <div class="nav-item" onclick="location.href='wishlist.html'"><span class="ni">❤️</span> Wishlist</div>
-      <div class="nav-item" onclick="location.href='cart.html'"><span class="ni">🛒</span> My Cart</div>
-      <div class="nav-item"><span class="ni">📍</span> Addresses</div>
-      <div class="nav-item"><span class="ni">🔔</span> Notifications</div>
-      <div class="nav-item"><span class="ni">⭐</span> My Reviews</div>
-      <div class="nav-item"><span class="ni">🚪</span> Logout</div>
-    </div>
+<!-- ── LOGGED IN ── -->
+<div id="loggedIn" style="display:none;">
+  <div style="background:#f5f5f5;padding:12px 40px;font-size:13px;color:#666;">
+    <a href="../index.html" style="color:#2e7d32;">Home</a> › My Account
   </div>
 
-  <!-- MAIN -->
-  <div class="main-content">
-    <!-- STATS -->
-    <div class="card">
-      <div class="stats-row">
-        <div class="mini-stat"><div class="ms-val">12</div><div class="ms-lbl">Total Orders</div></div>
-        <div class="mini-stat"><div class="ms-val">6</div><div class="ms-lbl">Wishlist Items</div></div>
-        <div class="mini-stat"><div class="ms-val">8</div><div class="ms-lbl">Reviews Given</div></div>
-        <div class="mini-stat"><div class="ms-val">₹14.2k</div><div class="ms-lbl">Total Spent</div></div>
+  <div class="account-layout">
+    <!-- SIDEBAR -->
+    <div class="account-sidebar">
+      <div class="profile-card">
+        <div class="profile-avatar" id="avatarInitial">?</div>
+        <div class="profile-name"  id="sidebarName">Loading...</div>
+        <div class="profile-phone" id="sidebarPhone">📱 —</div>
+        <div class="profile-since" id="sidebarSince">🌾 Member</div>
+      </div>
+      <div class="sidebar-nav">
+        <div class="nav-item active" onclick="showSection('profile')"><span class="ni">👤</span> My Profile</div>
+        <div class="nav-item" onclick="location.href='orders.html'"><span class="ni">📦</span> My Orders</div>
+        <div class="nav-item" onclick="location.href='wishlist.html'"><span class="ni">❤️</span> Wishlist</div>
+        <div class="nav-item" onclick="location.href='cart.html'"><span class="ni">🛒</span> My Cart</div>
+        <div class="nav-item" onclick="showSection('addresses')"><span class="ni">📍</span> Addresses</div>
+        <div class="nav-item" onclick="doLogout()" style="color:#c62828;"><span class="ni">🚪</span> Logout</div>
       </div>
     </div>
 
-    <!-- PROFILE FORM -->
-    <div class="card">
-      <h3>👤 Personal Information</h3>
-      <div class="form-grid">
-        <div class="form-group"><label>Full Name</label><input type="text" value="Ramesh Patil"/></div>
-        <div class="form-group"><label>Mobile Number</label><input type="tel" value="+91 98765 43210" readonly style="background:#f5f5f5;"/></div>
-        <div class="form-group"><label>Email Address</label><input type="email" placeholder="Add your email address"/></div>
-        <div class="form-group"><label>Date of Birth</label><input type="date" value="1985-06-15"/></div>
-        <div class="form-group"><label>Gender</label>
-          <select><option>Male</option><option>Female</option><option>Other</option></select>
-        </div>
-        <div class="form-group"><label>Occupation</label>
-          <select><option>Farmer</option><option>Agri Dealer</option><option>Agronomist</option><option>Other</option></select>
-        </div>
-        <div class="form-group"><label>Farm Size (Acres)</label><input type="number" placeholder="e.g. 5" value="8"/></div>
-        <div class="form-group"><label>Primary Crop</label><input type="text" placeholder="e.g. Tomato, Wheat" value="Tomato, Onion"/></div>
-      </div>
-      <button class="save-btn">💾 Save Changes</button>
-    </div>
+    <!-- MAIN -->
+    <div class="main-content">
 
-    <!-- ADDRESSES -->
-    <div class="card">
-      <h3>📍 Saved Addresses</h3>
-      <div class="address-card default">
-        <span class="addr-tag">🏠 Home • Default</span>
-        <h5>Ramesh Patil</h5>
-        <p>Survey No. 45, Near Gram Panchayat, Nashik Rural, Nashik — 422003, Maharashtra</p>
-        <p style="margin-top:4px;font-size:12px;color:#2e7d32;">📱 +91 98765 43210</p>
-        <div class="addr-actions">
-          <button class="addr-btn edit">✏️ Edit</button>
-          <button class="addr-btn del">🗑️ Delete</button>
+      <!-- STATS -->
+      <div class="card">
+        <div class="stats-row">
+          <div class="mini-stat"><div class="ms-val" id="statOrders">—</div><div class="ms-lbl">Total Orders</div></div>
+          <div class="mini-stat"><div class="ms-val" id="statWishlist">—</div><div class="ms-lbl">Wishlist Items</div></div>
+          <div class="mini-stat"><div class="ms-val" id="statReviews">—</div><div class="ms-lbl">Reviews Given</div></div>
+          <div class="mini-stat"><div class="ms-val" id="statSpent">—</div><div class="ms-lbl">Total Spent</div></div>
         </div>
       </div>
-      <div class="address-card">
-        <span class="addr-tag">🏭 Farm</span>
-        <h5>Ramesh Patil</h5>
-        <p>Gat No. 12, Dindori Road, Niphad, Nashik — 422303, Maharashtra</p>
-        <p style="margin-top:4px;font-size:12px;color:#2e7d32;">📱 +91 98765 43210</p>
-        <div class="addr-actions">
-          <button class="addr-btn edit">✏️ Edit</button>
-          <button class="addr-btn del">🗑️ Delete</button>
-          <button class="addr-btn default-btn">Set as Default</button>
+
+      <!-- PROFILE SECTION -->
+      <div id="profileSection" class="card">
+        <h3>👤 Personal Information</h3>
+        <div class="form-grid">
+          <div class="form-group"><label>Full Name</label><input type="text" id="pName" placeholder="Your full name"/></div>
+          <div class="form-group"><label>Mobile Number</label><input type="tel" id="pPhone" readonly/></div>
+          <div class="form-group"><label>Email Address</label><input type="email" id="pEmail" placeholder="Your email address"/></div>
+          <div class="form-group"><label>Date of Birth</label><input type="date" id="pDob"/></div>
+          <div class="form-group"><label>Gender</label>
+            <select id="pGender">
+              <option value="">Select gender</option>
+              <option value="MALE">Male</option>
+              <option value="FEMALE">Female</option>
+              <option value="OTHER">Other</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Occupation</label>
+            <select id="pOccupation">
+              <option value="">Select occupation</option>
+              <option value="Farmer">Farmer</option>
+              <option value="Agri Dealer">Agri Dealer</option>
+              <option value="Agronomist">Agronomist</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Farm Size (Acres)</label><input type="number" id="pFarmSize" placeholder="e.g. 5"/></div>
+          <div class="form-group"><label>Primary Crop</label><input type="text" id="pCrop" placeholder="e.g. Tomato, Wheat"/></div>
+        </div>
+        <button class="save-btn" id="saveProfileBtn" onclick="saveProfile()">💾 Save Changes</button>
+        <div class="save-msg" id="saveMsg">✅ Profile updated successfully!</div>
+      </div>
+
+      <!-- ADDRESSES SECTION -->
+      <div id="addressSection" class="card" style="display:none;">
+        <h3>📍 Saved Addresses</h3>
+        <div id="addressList"><p style="color:#999;font-size:14px;">Loading addresses...</p></div>
+        <button onclick="showAddAddressForm()" style="background:#f9fbe7;border:2px dashed #2e7d32;color:#2e7d32;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;width:100%;margin-top:4px;">+ Add New Address</button>
+
+        <!-- Add Address Form -->
+        <div id="addAddressForm" style="display:none;margin-top:20px;border-top:2px solid #e8f5e9;padding-top:20px;">
+          <h4 style="font-size:15px;font-weight:700;color:#1b5e20;margin-bottom:14px;">New Address</h4>
+          <div class="form-grid">
+            <div class="form-group"><label>Full Name</label><input type="text" id="aName" placeholder="Recipient name"/></div>
+            <div class="form-group"><label>Mobile</label><input type="tel" id="aMobile" placeholder="10-digit number" maxlength="10"/></div>
+            <div class="form-group full"><label>Address Line 1</label><input type="text" id="aLine1" placeholder="House/Plot No., Street"/></div>
+            <div class="form-group full"><label>Address Line 2 (Optional)</label><input type="text" id="aLine2" placeholder="Landmark, Area"/></div>
+            <div class="form-group"><label>City</label><input type="text" id="aCity" placeholder="City"/></div>
+            <div class="form-group"><label>State</label><input type="text" id="aState" placeholder="State"/></div>
+            <div class="form-group"><label>Pincode</label><input type="text" id="aPincode" placeholder="6-digit pincode" maxlength="6"/></div>
+            <div class="form-group"><label>Address Type</label>
+              <select id="aType">
+                <option value="HOME">🏠 Home</option>
+                <option value="FARM">🌾 Farm</option>
+                <option value="OFFICE">🏢 Office</option>
+                <option value="OTHER">📍 Other</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:14px;">
+            <button class="save-btn" onclick="saveAddress()">💾 Save Address</button>
+            <button onclick="document.getElementById('addAddressForm').style.display='none'" style="background:#f5f5f5;border:none;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;">Cancel</button>
+          </div>
         </div>
       </div>
-      <button style="background:#f9fbe7;border:2px dashed #2e7d32;color:#2e7d32;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;width:100%;margin-top:4px;">+ Add New Address</button>
+
     </div>
   </div>
 </div>
 
 <div id="footer-root"></div>
 <script src="../js/components.js"></script>
+<script src="../js/api.js"></script>
 <script>
+  const API   = 'http://localhost/drithi-agro/backend/index.php?route=';
+  const token = localStorage.getItem('da_token');
+
   document.getElementById('header-root').innerHTML = renderHeader('');
   document.getElementById('footer-root').innerHTML = renderFooter();
-  document.querySelectorAll('.nav-item').forEach(item => {
-    item.addEventListener('click', function() {
-      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-      this.classList.add('active');
+
+  // ── Auth gate ──
+  if (!token) {
+    document.getElementById('notLoggedIn').style.display = 'block';
+  } else {
+    document.getElementById('loggedIn').style.display = 'block';
+    loadProfile();
+    loadAddresses();
+  }
+
+  // ── Section toggle ──
+  function showSection(sec) {
+    document.getElementById('profileSection').style.display  = sec === 'profile'   ? 'block' : 'none';
+    document.getElementById('addressSection').style.display  = sec === 'addresses' ? 'block' : 'none';
+    document.querySelectorAll('.nav-item').forEach((el, i) => {
+      el.classList.toggle('active', (i === 0 && sec === 'profile') || (i === 4 && sec === 'addresses'));
     });
-  });
+  }
+
+  // ── Load profile ──
+  async function loadProfile() {
+    try {
+      const res = await fetch(API + 'customer&section=profile', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      }).then(r => r.json());
+
+      if (!res.success) { doLogout(); return; }
+      const d = res.data;
+
+      // Sidebar
+      const initials = (d.full_name || '?').charAt(0).toUpperCase();
+      document.getElementById('avatarInitial').textContent = initials;
+      document.getElementById('sidebarName').textContent   = d.full_name || '—';
+      document.getElementById('sidebarPhone').textContent  = '📱 +91 ' + (d.mobile || '');
+      document.getElementById('sidebarSince').textContent  = '🌾 Member since ' + new Date(d.created_at).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' });
+
+      // Stats
+      const s = d.stats || {};
+      document.getElementById('statOrders').textContent   = s.total_orders   || 0;
+      document.getElementById('statWishlist').textContent = s.wishlist_count  || 0;
+      document.getElementById('statReviews').textContent  = s.review_count    || 0;
+      document.getElementById('statSpent').textContent    = s.total_spent > 0 ? '₹' + Number(s.total_spent).toLocaleString('en-IN') : '₹0';
+
+      // Form fields
+      document.getElementById('pName').value       = d.full_name   || '';
+      document.getElementById('pPhone').value      = '+91 ' + (d.mobile || '');
+      document.getElementById('pEmail').value      = d.email       || '';
+      document.getElementById('pDob').value        = d.dob         || '';
+      document.getElementById('pGender').value     = d.gender      || '';
+      document.getElementById('pOccupation').value = d.occupation  || '';
+      document.getElementById('pFarmSize').value   = d.farm_size   || '';
+      document.getElementById('pCrop').value       = d.primary_crop|| '';
+
+    } catch(e) {
+      console.error('Profile load error', e);
+    }
+  }
+
+  // ── Save profile ──
+  async function saveProfile() {
+    const btn = document.getElementById('saveProfileBtn');
+    btn.disabled = true; btn.textContent = '⏳ Saving...';
+    const body = {
+      full_name:    document.getElementById('pName').value.trim(),
+      email:        document.getElementById('pEmail').value.trim(),
+      dob:          document.getElementById('pDob').value,
+      gender:       document.getElementById('pGender').value,
+      occupation:   document.getElementById('pOccupation').value,
+      farm_size:    document.getElementById('pFarmSize').value,
+      primary_crop: document.getElementById('pCrop').value.trim()
+    };
+    try {
+      const res = await fetch(API + 'customer&section=profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify(body)
+      }).then(r => r.json());
+
+      const msg = document.getElementById('saveMsg');
+      if (res.success) {
+        msg.textContent = '✅ Profile updated successfully!';
+        msg.style.background = '#e8f5e9'; msg.style.color = '#1b5e20';
+        // Update sidebar name
+        document.getElementById('sidebarName').textContent  = body.full_name || '—';
+        document.getElementById('avatarInitial').textContent = (body.full_name || '?').charAt(0).toUpperCase();
+        // Update localStorage
+        const u = JSON.parse(localStorage.getItem('da_user') || '{}');
+        u.full_name = body.full_name;
+        localStorage.setItem('da_user', JSON.stringify(u));
+      } else {
+        msg.textContent = '❌ ' + (res.message || 'Update failed.');
+        msg.style.background = '#ffebee'; msg.style.color = '#c62828';
+      }
+      msg.style.display = 'block';
+      setTimeout(() => msg.style.display = 'none', 3000);
+    } catch(e) {
+      console.error(e);
+    }
+    btn.disabled = false; btn.textContent = '💾 Save Changes';
+  }
+
+  // ── Load addresses ──
+  async function loadAddresses() {
+    try {
+      const res = await fetch(API + 'customer&section=addresses', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      }).then(r => r.json());
+
+      const list = document.getElementById('addressList');
+      if (!res.success || !res.data.length) {
+        list.innerHTML = '<p style="color:#999;font-size:14px;">No saved addresses yet.</p>';
+        return;
+      }
+      list.innerHTML = res.data.map(a => `
+        <div class="address-card ${a.is_default ? 'default' : ''}">
+          <span class="addr-tag">${a.address_type} ${a.is_default ? '• Default' : ''}</span>
+          <h5>${a.full_name}</h5>
+          <p>${a.address_line1}${a.address_line2 ? ', ' + a.address_line2 : ''}, ${a.city}, ${a.state} — ${a.pincode}</p>
+          <p style="margin-top:4px;font-size:12px;color:#2e7d32;">📱 ${a.mobile}</p>
+          <div class="addr-actions">
+            <button class="addr-btn del" onclick="deleteAddress(${a.id})">🗑️ Delete</button>
+          </div>
+        </div>
+      `).join('');
+    } catch(e) { console.error(e); }
+  }
+
+  // ── Add address ──
+  function showAddAddressForm() {
+    showSection('addresses');
+    document.getElementById('addAddressForm').style.display = 'block';
+  }
+
+  async function saveAddress() {
+    const body = {
+      full_name:    document.getElementById('aName').value.trim(),
+      mobile:       document.getElementById('aMobile').value.trim(),
+      address_line1:document.getElementById('aLine1').value.trim(),
+      address_line2:document.getElementById('aLine2').value.trim(),
+      city:         document.getElementById('aCity').value.trim(),
+      state:        document.getElementById('aState').value.trim(),
+      pincode:      document.getElementById('aPincode').value.trim(),
+      address_type: document.getElementById('aType').value
+    };
+    if (!body.full_name || !body.mobile || !body.address_line1 || !body.city || !body.state || !body.pincode) {
+      alert('Please fill all required fields.'); return;
+    }
+    const res = await fetch(API + 'customer&section=addresses', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify(body)
+    }).then(r => r.json());
+
+    if (res.success) {
+      document.getElementById('addAddressForm').style.display = 'none';
+      loadAddresses();
+    } else {
+      alert(res.message || 'Failed to save address.');
+    }
+  }
+
+  // ── Delete address ──
+  async function deleteAddress(id) {
+    if (!confirm('Delete this address?')) return;
+    const res = await fetch(API + 'customer&section=addresses&id=' + id, {
+      method: 'DELETE',
+      headers: { 'Authorization': 'Bearer ' + token }
+    }).then(r => r.json());
+    if (res.success) loadAddresses();
+  }
+
+  // ── Logout ──
+  function doLogout() {
+    localStorage.removeItem('da_token');
+    localStorage.removeItem('da_user');
+    localStorage.removeItem('cartCount');
+    location.href = 'login.html';
+  }
 </script>
 </body>
 </html>
