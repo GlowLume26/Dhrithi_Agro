@@ -122,7 +122,13 @@
     }
     .page-btn:hover, .page-btn.active { background: #2e7d32; color: white; border-color: #2e7d32; }
 
-    /* FARMING TIPS BANNER */
+    .subcat-row {
+      padding: 9px 14px; background: #f9fbe7; border-radius: 8px;
+      font-size: 13px; font-weight: 600; color: #1b5e20; cursor: pointer;
+      border: 1px solid #e8f5e9; transition: all 0.2s;
+    }
+    .subcat-row:hover { background: #e8f5e9; border-color: #2e7d32; padding-left: 18px; }
+    .subcat-row.active { background: #2e7d32; color: white; border-color: #2e7d32; }
     .tips-banner {
       background: linear-gradient(135deg, #f9a825, #f57f17);
       border-radius: 16px; padding: 30px; display: flex;
@@ -167,14 +173,9 @@
     <div class="sidebar-card">
       <h3>🗂️ Categories</h3>
       <div class="filter-list">
-        <label class="filter-item"><input type="checkbox" checked/> 🌱 Seeds <span class="fi-count">2,400</span></label>
-        <label class="filter-item"><input type="checkbox" checked/> 🧪 Fertilizers <span class="fi-count">1,800</span></label>
-        <label class="filter-item"><input type="checkbox"/> 🛡️ Pesticides <span class="fi-count">1,200</span></label>
-        <label class="filter-item"><input type="checkbox"/> 🌿 Organic <span class="fi-count">900</span></label>
-        <label class="filter-item"><input type="checkbox"/> 💧 Irrigation <span class="fi-count">600</span></label>
-        <label class="filter-item"><input type="checkbox"/> 🔧 Farm Tools <span class="fi-count">800</span></label>
-        <label class="filter-item"><input type="checkbox"/> 📈 Growth Regulators <span class="fi-count">400</span></label>
-        <label class="filter-item"><input type="checkbox"/> 🪱 Soil Health <span class="fi-count">350</span></label>
+        <label class="filter-item" onclick="filterByParent(1)"><input type="radio" name="cat"/> 💧 Irrigation</label>
+        <label class="filter-item" onclick="filterByParent(2)"><input type="radio" name="cat"/> 🌿 Gardening</label>
+        <label class="filter-item" onclick="filterByParent(3)"><input type="radio" name="cat"/> 🐄 Cattle & Bird Care</label>
       </div>
     </div>
 
@@ -234,52 +235,28 @@
 
     <!-- BIG CATEGORY CARDS -->
     <div class="big-cats-grid">
-      <div class="big-cat-card">
-        <img src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=600&q=80" alt="Seeds"/>
-        <div class="big-cat-overlay">
-          <div class="cat-arrow">→</div>
-          <h3>🌱 Seeds</h3>
-          <span>2,400+ Products • Hybrid & Open Pollinated</span>
-        </div>
-      </div>
-      <div class="big-cat-card">
-        <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&q=80" alt="Fertilizers"/>
-        <div class="big-cat-overlay">
-          <div class="cat-arrow">→</div>
-          <h3>🧪 Fertilizers</h3>
-          <span>1,800+ Products • NPK, Organic & More</span>
-        </div>
-      </div>
-      <div class="big-cat-card">
-        <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=600&q=80" alt="Pesticides"/>
-        <div class="big-cat-overlay">
-          <div class="cat-arrow">→</div>
-          <h3>🛡️ Pesticides</h3>
-          <span>1,200+ Products • Insecticides, Fungicides</span>
-        </div>
-      </div>
-      <div class="big-cat-card">
-        <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=600&q=80" alt="Organic"/>
-        <div class="big-cat-overlay">
-          <div class="cat-arrow">→</div>
-          <h3>🌿 Organic Farming</h3>
-          <span>900+ Products • Certified Organic</span>
-        </div>
-      </div>
-      <div class="big-cat-card">
+      <div class="big-cat-card" onclick="filterByParent(1,'irrigation')">
         <img src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=600&q=80" alt="Irrigation"/>
         <div class="big-cat-overlay">
           <div class="cat-arrow">→</div>
           <h3>💧 Irrigation</h3>
-          <span>600+ Products • Drip, Sprinkler & More</span>
+          <span>Sprinkler • Drip • Pipe & Fitting • Rain Pipe</span>
         </div>
       </div>
-      <div class="big-cat-card">
-        <img src="https://images.unsplash.com/photo-1586771107445-d3ca888129ff?w=600&q=80" alt="Tools"/>
+      <div class="big-cat-card" onclick="filterByParent(2,'gardening')">
+        <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&q=80" alt="Gardening"/>
         <div class="big-cat-overlay">
           <div class="cat-arrow">→</div>
-          <h3>🔧 Farm Tools</h3>
-          <span>800+ Products • Hand & Power Tools</span>
+          <h3>🌿 Gardening</h3>
+          <span>Tools • Seeds • Fertilizer • Grow Bag & More</span>
+        </div>
+      </div>
+      <div class="big-cat-card" onclick="filterByParent(3,'cattle-bird-care')">
+        <img src="https://images.unsplash.com/photo-1560493676-04071c5f467b?w=600&q=80" alt="Cattle & Bird Care"/>
+        <div class="big-cat-overlay">
+          <div class="cat-arrow">→</div>
+          <h3>🐄 Cattle & Bird Care</h3>
+          <span>Fodder • Poultry • Aqua Care • Animal Health</span>
         </div>
       </div>
     </div>
@@ -293,18 +270,64 @@
       <button class="tips-btn">📞 Call Expert Now</button>
     </div>
 
-    <!-- SUB CATEGORIES -->
-    <div class="subcat-section">
-      <h2>🌱 Seeds Sub-Categories</h2>
-      <div class="subcat-grid">
-        <div class="subcat-card"><div class="sc-icon">🍅</div><h4>Vegetable Seeds</h4><span>850 items</span></div>
-        <div class="subcat-card"><div class="sc-icon">🌸</div><h4>Flower Seeds</h4><span>320 items</span></div>
-        <div class="subcat-card"><div class="sc-icon">🌾</div><h4>Cereal Seeds</h4><span>410 items</span></div>
-        <div class="subcat-card"><div class="sc-icon">🫘</div><h4>Pulse Seeds</h4><span>280 items</span></div>
-        <div class="subcat-card"><div class="sc-icon">🌻</div><h4>Oilseed Crops</h4><span>190 items</span></div>
-        <div class="subcat-card"><div class="sc-icon">🌿</div><h4>Herb Seeds</h4><span>150 items</span></div>
-        <div class="subcat-card"><div class="sc-icon">🍉</div><h4>Fruit Seeds</h4><span>200 items</span></div>
-        <div class="subcat-card"><div class="sc-icon">🧅</div><h4>Spice Seeds</h4><span>175 items</span></div>
+    <!-- SUB CATEGORIES — 3 columns -->
+    <div class="subcat-section" id="subcatSection">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;" id="subcatColumns">
+
+        <!-- IRRIGATION -->
+        <div>
+          <h2 style="font-size:17px;font-weight:800;color:#1b5e20;margin-bottom:14px;display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="filterByParent(1,'irrigation')">💧 Irrigation <span style="font-size:12px;color:#888;font-weight:400;">→</span></h2>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div class="subcat-row" onclick="filterBySub(4)">🌧️ Sprinkler</div>
+            <div class="subcat-row" onclick="filterBySub(5)">💦 Drip Irrigation Accessories</div>
+            <div class="subcat-row" onclick="filterBySub(6)">🔩 Pipe & Fitting</div>
+            <div class="subcat-row" onclick="filterBySub(7)">🪣 Drip Irrigation Kit</div>
+            <div class="subcat-row" onclick="filterBySub(8)">🌂 Rain Pipe</div>
+          </div>
+        </div>
+
+        <!-- GARDENING -->
+        <div>
+          <h2 style="font-size:17px;font-weight:800;color:#1b5e20;margin-bottom:14px;display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="filterByParent(2,'gardening')">🌿 Gardening <span style="font-size:12px;color:#888;font-weight:400;">→</span></h2>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div class="subcat-row" onclick="filterBySub(9)">🔧 Tools</div>
+            <div class="subcat-row" onclick="filterBySub(10)">🧴 Spray Pumps</div>
+            <div class="subcat-row" onclick="filterBySub(11)">🌱 Lawn Mowers</div>
+            <div class="subcat-row" onclick="filterBySub(12)">🪨 Pebbles</div>
+            <div class="subcat-row" onclick="filterBySub(13)">🎒 Accessories</div>
+            <div class="subcat-row" onclick="filterBySub(14)">🌰 Seeds</div>
+            <div class="subcat-row" onclick="filterBySub(15)">🧪 Fertilizer</div>
+            <div class="subcat-row" onclick="filterBySub(16)">🛡️ Pesticides</div>
+            <div class="subcat-row" onclick="filterBySub(17)">🕸️ Garden Shade Net</div>
+            <div class="subcat-row" onclick="filterBySub(18)">🥥 Coco Peat</div>
+            <div class="subcat-row" onclick="filterBySub(19)">♻️ Water Compost Management</div>
+            <div class="subcat-row" onclick="filterBySub(20)">🧰 Gardening Kit</div>
+            <div class="subcat-row" onclick="filterBySub(21)">🛍️ Grow Bag</div>
+            <div class="subcat-row" onclick="filterBySub(22)">🌾 De Oiled Cake</div>
+            <div class="subcat-row" onclick="filterBySub(23)">🌸 Flower Seeds</div>
+            <div class="subcat-row" onclick="filterBySub(24)">⚗️ Fertilizer Blend</div>
+            <div class="subcat-row" onclick="filterBySub(25)">🪴 Transplanting / Repotting Mat</div>
+          </div>
+        </div>
+
+        <!-- CATTLE & BIRD CARE -->
+        <div>
+          <h2 style="font-size:17px;font-weight:800;color:#1b5e20;margin-bottom:14px;display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="filterByParent(3,'cattle-bird-care')">🐄 Cattle & Bird Care <span style="font-size:12px;color:#888;font-weight:400;">→</span></h2>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div class="subcat-row" onclick="filterBySub(26)">🌿 Fodder Seed</div>
+            <div class="subcat-row" onclick="filterBySub(27)">💊 Mineral Mixture</div>
+            <div class="subcat-row" onclick="filterBySub(28)">🐦 Bird Food</div>
+            <div class="subcat-row" onclick="filterBySub(29)">🦟 Mosquito Net</div>
+            <div class="subcat-row" onclick="filterBySub(30)">🐟 Aqua Care</div>
+            <div class="subcat-row" onclick="filterBySub(31)">🦐 Aquaculture Feed Additives</div>
+            <div class="subcat-row" onclick="filterBySub(32)">🐑 Goat and Sheep Care</div>
+            <div class="subcat-row" onclick="filterBySub(33)">🐔 Poultry Feed Supplements</div>
+            <div class="subcat-row" onclick="filterBySub(34)">🐷 Swine Supplement</div>
+            <div class="subcat-row" onclick="filterBySub(35)">🎒 Silage Bag (Murghas Bag)</div>
+            <div class="subcat-row" onclick="filterBySub(36)">💉 Animal Health Supplements</div>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -514,6 +537,25 @@
     currentPage = p;
     loadProducts({ ...currentFilters, search: searchTerm });
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── Filter by parent category ──
+  function filterByParent(parentId, slug) {
+    currentFilters = { category_id: parentId };
+    currentPage = 1;
+    document.querySelectorAll('.subcat-row').forEach(r => r.classList.remove('active'));
+    document.querySelector('.products-section').scrollIntoView({ behavior: 'smooth' });
+    loadProducts({ ...currentFilters, search: searchTerm });
+  }
+
+  // ── Filter by sub-category ──
+  function filterBySub(catId) {
+    currentFilters = { category_id: catId };
+    currentPage = 1;
+    document.querySelectorAll('.subcat-row').forEach(r => r.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    document.querySelector('.products-section').scrollIntoView({ behavior: 'smooth' });
+    loadProducts({ ...currentFilters, search: searchTerm });
   }
 
   // ── Sort ──
