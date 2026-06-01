@@ -122,9 +122,14 @@ window.addEventListener('scroll', () => {
 
 // ===== SEARCH =====
 function doSearch() {
-  const q = document.getElementById('searchInput')?.value;
-  if (q) alert('Searching for: ' + q);
+  const q = document.getElementById('searchInput')?.value?.trim();
+  if (!q) return;
+  const base = window.location.pathname.includes('/pages/') ? '' : 'pages/';
+  window.location.href = base + 'categories.html?search=' + encodeURIComponent(q);
 }
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && document.activeElement?.id === 'searchInput') doSearch();
+});
 
 // ===== WISHLIST TOGGLE =====
 function toggleWish(btn) {

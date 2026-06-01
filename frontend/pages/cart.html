@@ -6,25 +6,25 @@
   <title>My Cart - Drithi Agro</title>
   <link rel="stylesheet" href="../css/style.css"/>
   <style>
+    body { background: #f0f4f0; }
     .cart-page { display: grid; grid-template-columns: 1fr 360px; gap: 30px; padding: 30px 40px; max-width: 1200px; margin: 0 auto; }
     .cart-header { background: white; border-radius: 14px; padding: 20px 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
     .cart-header h2 { font-size: 20px; font-weight: 800; color: #1b5e20; }
     .cart-item { background: white; border-radius: 14px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); margin-bottom: 14px; display: grid; grid-template-columns: 100px 1fr auto; gap: 16px; align-items: start; }
-    .cart-item-img { width: 100px; height: 100px; border-radius: 10px; overflow: hidden; border: 2px solid #e8f5e9; }
+    .cart-item-img { width: 100px; height: 100px; border-radius: 10px; overflow: hidden; border: 2px solid #e8f5e9; background: #f5f5f5; }
     .cart-item-img img { width: 100%; height: 100%; object-fit: cover; }
     .cart-item-info h4 { font-size: 15px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px; }
     .cart-item-info .brand { font-size: 12px; color: #888; margin-bottom: 8px; }
     .cart-item-info .item-price { font-size: 18px; font-weight: 800; color: #1b5e20; }
     .cart-item-info .item-old { font-size: 13px; color: #999; text-decoration: line-through; margin-left: 8px; }
     .cart-item-info .item-disc { font-size: 12px; color: #e53935; font-weight: 600; margin-left: 6px; }
-    .item-qty { display: flex; align-items: center; gap: 0; border: 2px solid #e0e0e0; border-radius: 8px; overflow: hidden; margin-top: 10px; width: fit-content; }
+    .item-qty { display: flex; align-items: center; border: 2px solid #e0e0e0; border-radius: 8px; overflow: hidden; margin-top: 10px; width: fit-content; }
     .iq-btn { width: 32px; height: 32px; border: none; background: #f5f5f5; font-size: 16px; cursor: pointer; }
     .iq-btn:hover { background: #e8f5e9; }
-    .iq-val { width: 40px; text-align: center; font-size: 14px; font-weight: 700; border: none; outline: none; }
+    .iq-val { width: 40px; text-align: center; font-size: 14px; font-weight: 700; border: none; outline: none; background: white; }
     .item-actions { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
     .item-total { font-size: 18px; font-weight: 800; color: #1b5e20; }
     .item-del { background: none; border: none; color: #e53935; font-size: 12px; cursor: pointer; font-weight: 600; }
-    .item-wish { background: none; border: none; color: #666; font-size: 12px; cursor: pointer; }
     .cart-summary { background: white; border-radius: 14px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); position: sticky; top: 80px; height: fit-content; }
     .cart-summary h3 { font-size: 16px; font-weight: 800; color: #1b5e20; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid #e8f5e9; }
     .summary-row { display: flex; justify-content: space-between; font-size: 14px; color: #555; margin-bottom: 12px; }
@@ -36,16 +36,22 @@
     .coupon-input input { flex: 1; padding: 10px 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 13px; outline: none; }
     .coupon-input input:focus { border-color: #2e7d32; }
     .coupon-input button { background: #2e7d32; color: white; border: none; padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
-    .checkout-btn { width: 100%; background: #2e7d32; color: white; border: none; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-top: 8px; }
+    .checkout-btn { width: 100%; background: #2e7d32; color: white; border: none; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 8px; transition: all 0.2s; }
     .checkout-btn:hover { background: #1b5e20; transform: translateY(-2px); }
+    .checkout-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
     .safe-badge { text-align: center; font-size: 12px; color: #888; margin-top: 12px; }
     .empty-cart { text-align: center; padding: 60px 20px; background: white; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
     .empty-cart .ec-icon { font-size: 80px; margin-bottom: 20px; }
     .empty-cart h3 { font-size: 22px; font-weight: 800; color: #1b5e20; margin-bottom: 10px; }
     .empty-cart p { color: #666; font-size: 14px; margin-bottom: 24px; }
-    .offers-strip { background: #e8f5e9; border-radius: 10px; padding: 12px 16px; margin-bottom: 16px; font-size: 13px; color: #2e7d32; font-weight: 600; }
+    .empty-cart a { background: #2e7d32; color: white; padding: 14px 32px; border-radius: 12px; font-weight: 700; font-size: 15px; text-decoration: none; display: inline-block; }
+    .login-prompt-cart { background: white; border-radius: 14px; padding: 40px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+    .login-prompt-cart h3 { font-size: 20px; font-weight: 800; color: #1b5e20; margin-bottom: 10px; }
+    .login-prompt-cart p { color: #666; font-size: 14px; margin-bottom: 20px; }
+    .login-prompt-cart a { background: #2e7d32; color: white; padding: 12px 28px; border-radius: 10px; font-weight: 700; font-size: 14px; text-decoration: none; display: inline-block; }
+    .loading-cart { text-align: center; padding: 40px; color: #888; font-size: 15px; }
     @media (max-width: 900px) { .cart-page { grid-template-columns: 1fr; } }
-    @media (max-width: 600px) { .cart-item { grid-template-columns: 80px 1fr; } .item-actions { grid-column: 1/-1; flex-direction: row; justify-content: space-between; } }
+    @media (max-width: 600px) { .cart-item { grid-template-columns: 80px 1fr; } .item-actions { grid-column: 1/-1; flex-direction: row; justify-content: space-between; } .cart-page { padding: 16px; } }
   </style>
 </head>
 <body>
@@ -56,95 +62,29 @@
 </div>
 
 <div class="cart-page">
-  <div>
-    <div class="cart-header">
-      <h2>🛒 My Cart <span style="font-size:14px;color:#888;font-weight:400;">(3 items)</span></h2>
-      <a href="categories.html" style="font-size:13px;color:#2e7d32;font-weight:600;">+ Continue Shopping</a>
-    </div>
-
-    <div class="offers-strip">🎁 Apply coupon AGRO10 to get 10% extra off on your order!</div>
-
-    <!-- CART ITEMS -->
-    <div class="cart-item">
-      <div class="cart-item-img"><img src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=300&q=80" alt=""/></div>
-      <div class="cart-item-info">
-        <h4>Hybrid Tomato Seeds F1 - High Yield Variety (10g)</h4>
-        <div class="brand">Syngenta India Ltd. • Seeds</div>
-        <div><span class="item-price">₹299</span><span class="item-old">₹450</span><span class="item-disc">33% OFF</span></div>
-        <div style="font-size:12px;color:#2e7d32;margin-top:4px;">✅ In Stock • Free Delivery</div>
-        <div class="item-qty">
-          <button class="iq-btn" onclick="changeItemQty(this,-1)">−</button>
-          <input class="iq-val" value="2" readonly/>
-          <button class="iq-btn" onclick="changeItemQty(this,1)">+</button>
-        </div>
-      </div>
-      <div class="item-actions">
-        <span class="item-total">₹598</span>
-        <button class="item-wish">💛 Save for Later</button>
-        <button class="item-del" onclick="removeItem(this)">🗑️ Remove</button>
-      </div>
-    </div>
-
-    <div class="cart-item">
-      <div class="cart-item-img"><img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=300&q=80" alt=""/></div>
-      <div class="cart-item-info">
-        <h4>NPK 19:19:19 Water Soluble Fertilizer 1kg</h4>
-        <div class="brand">IFFCO • Fertilizers</div>
-        <div><span class="item-price">₹185</span><span class="item-old">₹220</span><span class="item-disc">16% OFF</span></div>
-        <div style="font-size:12px;color:#2e7d32;margin-top:4px;">✅ In Stock • Free Delivery</div>
-        <div class="item-qty">
-          <button class="iq-btn" onclick="changeItemQty(this,-1)">−</button>
-          <input class="iq-val" value="1" readonly/>
-          <button class="iq-btn" onclick="changeItemQty(this,1)">+</button>
-        </div>
-      </div>
-      <div class="item-actions">
-        <span class="item-total">₹185</span>
-        <button class="item-wish">💛 Save for Later</button>
-        <button class="item-del" onclick="removeItem(this)">🗑️ Remove</button>
-      </div>
-    </div>
-
-    <div class="cart-item">
-      <div class="cart-item-img"><img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=300&q=80" alt=""/></div>
-      <div class="cart-item-info">
-        <h4>Neem Oil 10000 PPM Bio Insecticide 1L</h4>
-        <div class="brand">Anand Agro • Organic</div>
-        <div><span class="item-price">₹840</span><span class="item-old">₹1100</span><span class="item-disc">24% OFF</span></div>
-        <div style="font-size:12px;color:#2e7d32;margin-top:4px;">✅ In Stock • Free Delivery</div>
-        <div class="item-qty">
-          <button class="iq-btn" onclick="changeItemQty(this,-1)">−</button>
-          <input class="iq-val" value="1" readonly/>
-          <button class="iq-btn" onclick="changeItemQty(this,1)">+</button>
-        </div>
-      </div>
-      <div class="item-actions">
-        <span class="item-total">₹840</span>
-        <button class="item-wish">💛 Save for Later</button>
-        <button class="item-del" onclick="removeItem(this)">🗑️ Remove</button>
-      </div>
-    </div>
+  <div id="cartLeft">
+    <div class="loading-cart">⏳ Loading your cart...</div>
   </div>
 
   <!-- ORDER SUMMARY -->
   <div class="cart-summary">
     <h3>📋 Order Summary</h3>
-    <div class="summary-row"><span>Price (3 items)</span><span>₹1,923</span></div>
-    <div class="summary-row save"><span>Discount</span><span>− ₹427</span></div>
-    <div class="summary-row"><span>Delivery Charges</span><span style="color:#2e7d32;font-weight:600;">FREE</span></div>
-    <div class="summary-row"><span>Platform Fee</span><span>₹0</span></div>
-    <div class="summary-row total"><span>Total Amount</span><span>₹1,496</span></div>
-    <div style="font-size:12px;color:#2e7d32;font-weight:600;margin-top:8px;">🎉 You save ₹427 on this order!</div>
+    <div class="summary-row"><span id="sumLabel">Price (0 items)</span><span id="sumMrp">₹0</span></div>
+    <div class="summary-row save"><span>Discount</span><span id="sumDiscount">− ₹0</span></div>
+    <div class="summary-row"><span>Delivery Charges</span><span id="sumDelivery">₹0</span></div>
+    <div class="summary-row total"><span>Total Amount</span><span id="sumTotal">₹0</span></div>
+    <div id="sumSaveMsg" style="font-size:12px;color:#2e7d32;font-weight:600;margin-top:8px;display:none;"></div>
 
     <div class="coupon-box">
       <label>🏷️ Apply Coupon</label>
       <div class="coupon-input">
-        <input type="text" placeholder="Enter coupon code" id="couponInput"/>
+        <input type="text" placeholder="Enter coupon code" id="couponInput" style="text-transform:uppercase;"/>
         <button onclick="applyCoupon()">Apply</button>
       </div>
+      <div id="couponMsg" style="font-size:12px;margin-top:6px;display:none;"></div>
     </div>
 
-    <button class="checkout-btn" onclick="location.href='checkout.html'">🔒 Proceed to Checkout</button>
+    <button class="checkout-btn" id="checkoutBtn" onclick="location.href='checkout.html'" disabled>🔒 Proceed to Checkout</button>
     <div class="safe-badge">🔒 100% Secure Checkout • Razorpay Protected</div>
 
     <div style="margin-top:16px;padding-top:16px;border-top:1px solid #e8f5e9;">
@@ -161,23 +101,144 @@
 
 <div id="footer-root"></div>
 <script src="../js/components.js"></script>
+<script src="../js/api.js"></script>
 <script>
+  const API   = 'http://localhost/drithi-agro/backend/index.php?route=';
+  const token = localStorage.getItem('da_token');
+
   document.getElementById('header-root').innerHTML = renderHeader('');
   document.getElementById('footer-root').innerHTML = renderFooter();
 
-  function changeItemQty(btn, d) {
-    const input = btn.parentElement.querySelector('.iq-val');
-    let v = parseInt(input.value) + d;
-    if (v < 1) v = 1;
-    input.value = v;
+  // ── Not logged in ──
+  if (!token) {
+    document.getElementById('cartLeft').innerHTML = `
+      <div class="login-prompt-cart">
+        <div style="font-size:60px;margin-bottom:16px;">🛒</div>
+        <h3>Login to view your cart</h3>
+        <p>Please login to add products and place orders.</p>
+        <a href="login.html">🔐 Login / Sign Up</a>
+      </div>`;
+  } else {
+    loadCart();
   }
-  function removeItem(btn) {
-    if (confirm('Remove this item from cart?')) btn.closest('.cart-item').remove();
+
+  let cartData = null;
+
+  async function loadCart() {
+    try {
+      const res = await fetch(API + 'cart', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      }).then(r => r.json());
+
+      if (!res.success) { renderEmpty(); return; }
+      cartData = res.data;
+      renderCart(cartData);
+    } catch(e) {
+      document.getElementById('cartLeft').innerHTML = `<div class="loading-cart">❌ Failed to load cart. Make sure the server is running.</div>`;
+    }
   }
+
+  function renderCart(data) {
+    const items = data.items || [];
+    if (!items.length) { renderEmpty(); return; }
+
+    // Update summary
+    document.getElementById('sumLabel').textContent    = `Price (${items.length} item${items.length > 1 ? 's' : ''})`;
+    document.getElementById('sumMrp').textContent      = '₹' + Number(data.mrp_total).toLocaleString('en-IN');
+    document.getElementById('sumDiscount').textContent = '− ₹' + Number(data.savings).toLocaleString('en-IN');
+    document.getElementById('sumDelivery').textContent = data.delivery === 0 ? '🎉 FREE' : '₹' + data.delivery;
+    document.getElementById('sumTotal').textContent    = '₹' + Number(data.total).toLocaleString('en-IN');
+    if (data.savings > 0) {
+      document.getElementById('sumSaveMsg').textContent = `🎉 You save ₹${Number(data.savings).toLocaleString('en-IN')} on this order!`;
+      document.getElementById('sumSaveMsg').style.display = 'block';
+    }
+    document.getElementById('checkoutBtn').disabled = false;
+
+    // Update header cart count
+    const cc = document.getElementById('cartCount');
+    if (cc) cc.textContent = items.length;
+    localStorage.setItem('cartCount', items.length);
+
+    // Render items
+    document.getElementById('cartLeft').innerHTML = `
+      <div class="cart-header">
+        <h2>🛒 My Cart <span style="font-size:14px;color:#888;font-weight:400;">(${items.length} item${items.length > 1 ? 's' : ''})</span></h2>
+        <a href="categories.html" style="font-size:13px;color:#2e7d32;font-weight:600;">+ Continue Shopping</a>
+      </div>
+      ${data.delivery === 0 ? '<div style="background:#e8f5e9;border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#2e7d32;font-weight:600;">🎉 Free delivery applied on this order!</div>' : '<div style="background:#fff3e0;border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#e65100;font-weight:600;">🚚 Add ₹' + (499 - data.subtotal).toFixed(0) + ' more for FREE delivery!</div>'}
+      ${items.map(item => renderItem(item)).join('')}
+    `;
+  }
+
+  function renderItem(item) {
+    const disc = item.mrp > item.selling_price
+      ? Math.round((item.mrp - item.selling_price) / item.mrp * 100)
+      : 0;
+    const img = item.image || 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=300&q=80';
+    return `
+      <div class="cart-item" id="cartItem_${item.id}">
+        <div class="cart-item-img"><img src="${img}" alt="${item.name}" onerror="this.src='https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=300&q=80'"/></div>
+        <div class="cart-item-info">
+          <h4>${item.name}</h4>
+          <div class="brand">${item.vendor_name || ''}</div>
+          <div>
+            <span class="item-price">₹${Number(item.selling_price).toLocaleString('en-IN')}</span>
+            ${disc > 0 ? `<span class="item-old">₹${Number(item.mrp).toLocaleString('en-IN')}</span><span class="item-disc">${disc}% OFF</span>` : ''}
+          </div>
+          <div style="font-size:12px;color:#2e7d32;margin-top:4px;">${item.stock_qty > 0 ? '✅ In Stock' : '❌ Out of Stock'}</div>
+          <div class="item-qty">
+            <button class="iq-btn" onclick="updateQty(${item.id}, ${item.quantity - 1}, ${item.stock_qty})">−</button>
+            <input class="iq-val" value="${item.quantity}" readonly/>
+            <button class="iq-btn" onclick="updateQty(${item.id}, ${item.quantity + 1}, ${item.stock_qty})">+</button>
+          </div>
+        </div>
+        <div class="item-actions">
+          <span class="item-total">₹${Number(item.selling_price * item.quantity).toLocaleString('en-IN')}</span>
+          <button class="item-del" onclick="removeItem(${item.id})">🗑️ Remove</button>
+        </div>
+      </div>`;
+  }
+
+  function renderEmpty() {
+    document.getElementById('cartLeft').innerHTML = `
+      <div class="empty-cart">
+        <div class="ec-icon">🛒</div>
+        <h3>Your cart is empty</h3>
+        <p>Looks like you haven't added anything yet. Start shopping!</p>
+        <a href="categories.html">🌾 Browse Products</a>
+      </div>`;
+    document.getElementById('checkoutBtn').disabled = true;
+  }
+
+  async function updateQty(cartId, newQty, maxStock) {
+    if (newQty < 1) { removeItem(cartId); return; }
+    if (newQty > maxStock) { showToast('❌ Only ' + maxStock + ' units available in stock.'); return; }
+    await fetch(API + 'cart&id=' + cartId, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ quantity: newQty })
+    });
+    loadCart();
+  }
+
+  async function removeItem(cartId) {
+    if (!confirm('Remove this item from cart?')) return;
+    await fetch(API + 'cart&id=' + cartId, {
+      method: 'DELETE',
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    loadCart();
+  }
+
   function applyCoupon() {
     const code = document.getElementById('couponInput').value.trim().toUpperCase();
-    if (code === 'AGRO10') showToast('✅ Coupon AGRO10 applied! 10% extra discount added.');
-    else showToast('❌ Invalid coupon code. Try AGRO10');
+    const msg  = document.getElementById('couponMsg');
+    if (!code) { msg.textContent = 'Please enter a coupon code.'; msg.style.color = '#c62828'; msg.style.display = 'block'; return; }
+    // Store coupon for checkout page
+    localStorage.setItem('da_coupon', code);
+    msg.textContent = `✅ Coupon "${code}" will be applied at checkout.`;
+    msg.style.color = '#2e7d32';
+    msg.style.display = 'block';
   }
 </script>
 </body>
