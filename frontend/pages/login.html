@@ -16,11 +16,11 @@
     <div class="auth-left-content">
       <div class="big-icon">🌾</div>
       <h2>Welcome to<br/>Drithi Agro</h2>
-      <p>India's most trusted platform for farmers. Get quality seeds, fertilizers, and farm tools delivered to your doorstep.</p>
+      <p>India's most trusted platform for farmers. Get quality products delivered to your doorstep.</p>
       <div class="auth-features">
         <div class="auth-feature">
           <span class="feat-icon">🚚</span>
-          <div><h4>Free Delivery</h4><p>On orders above ₹499 across India</p></div>
+          <div><h4>Free Delivery</h4><p>On selective products across India</p></div>
         </div>
         <div class="auth-feature">
           <span class="feat-icon">✅</span>
@@ -44,10 +44,7 @@
 
       <div class="auth-logo">
         <div class="logo-icon">🌿</div>
-        <div>
-          <h2>Drithi Agro</h2>
-          <span>Farm to Future</span>
-        </div>
+        <div><h2>Drithi Agro</h2><span>Farm to Future</span></div>
       </div>
 
       <!-- TABS -->
@@ -65,21 +62,21 @@
         <div class="step" id="step3" style="display:none">3</div>
       </div>
 
-      <!-- ERROR / INFO MESSAGE -->
+      <!-- MESSAGE BOX -->
       <div id="authMsg" style="display:none;padding:10px 14px;border-radius:10px;font-size:13px;font-weight:600;margin-bottom:12px;text-align:center;"></div>
 
-      <!-- ==================== LOGIN ==================== -->
+      <!-- ===== LOGIN ===== -->
       <div id="loginSection">
 
-        <!-- Step 1: Phone or Email -->
+        <!-- Step 1 -->
         <div id="loginStep1">
           <div class="auth-form">
             <!-- MODE TOGGLE -->
             <div style="display:flex;background:#f5f5f5;border-radius:10px;padding:4px;margin-bottom:16px;">
-              <button id="loginByPhone" onclick="setLoginMode('phone')" style="flex:1;padding:8px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:#2e7d32;color:white;transition:all 0.2s;">📱 Mobile OTP</button>
-              <button id="loginByEmail" onclick="setLoginMode('email')" style="flex:1;padding:8px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:#666;transition:all 0.2s;">📧 Email OTP</button>
+              <button id="loginByPhone" onclick="setLoginMode('phone')" style="flex:1;padding:8px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:#2e7d32;color:white;">📱 Mobile OTP</button>
+              <button id="loginByEmail" onclick="setLoginMode('email')" style="flex:1;padding:8px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:#666;">📧 Email OTP</button>
             </div>
-            <!-- PHONE -->
+            <!-- PHONE INPUT -->
             <div class="form-group" id="phoneInputWrap">
               <label>📱 Mobile Number</label>
               <div class="phone-input">
@@ -87,10 +84,10 @@
                 <input type="tel" id="loginPhone" placeholder="Enter 10-digit mobile number" maxlength="10"/>
               </div>
             </div>
-            <!-- EMAIL -->
+            <!-- EMAIL INPUT -->
             <div class="form-group" id="emailInputWrap" style="display:none;">
               <label>📧 Email Address</label>
-              <input type="email" id="loginEmail" placeholder="Enter your email address" style="width:100%;padding:11px 14px;border:2px solid #e0e0e0;border-radius:10px;font-size:14px;outline:none;"/>
+              <input type="email" id="loginEmail" placeholder="Enter your email address" style="width:100%;padding:11px 14px;border:2px solid #e0e0e0;border-radius:10px;font-size:14px;outline:none;font-family:inherit;"/>
             </div>
             <button class="submit-btn" id="loginOtpBtn" onclick="sendLoginOTP()">Send OTP →</button>
             <p style="text-align:center;font-size:12px;color:#999;margin-top:8px;">
@@ -103,7 +100,7 @@
         <div id="loginStep2" style="display:none">
           <div class="auth-form">
             <div class="form-group">
-              <label style="text-align:center;display:block;">Enter 6-digit OTP sent to <b id="loginPhoneDisplay"></b></label>
+              <label style="text-align:center;display:block;">Enter 6-digit OTP sent to <b id="loginDisplay"></b></label>
               <div class="otp-group" style="gap:8px;">
                 <input class="otp-input" maxlength="1" oninput="otpNext(this,0,'l')" onkeydown="otpBack(event,0,'l')" id="l0"/>
                 <input class="otp-input" maxlength="1" oninput="otpNext(this,1,'l')" onkeydown="otpBack(event,1,'l')" id="l1"/>
@@ -115,12 +112,12 @@
             </div>
             <div class="otp-timer" id="loginTimer">Resend OTP in <b id="loginCountdown">30</b>s</div>
             <button class="submit-btn" id="loginVerifyBtn" onclick="verifyLoginOTP()">✅ Verify & Login</button>
-            <button onclick="switchStep('login',1)" style="background:none;border:none;color:#2e7d32;font-size:13px;cursor:pointer;text-align:center;width:100%;margin-top:8px;">← Change Number</button>
+            <button onclick="switchStep('login',1)" style="background:none;border:none;color:#2e7d32;font-size:13px;cursor:pointer;text-align:center;width:100%;margin-top:8px;">← Change</button>
           </div>
         </div>
       </div>
 
-      <!-- ==================== SIGNUP ==================== -->
+      <!-- ===== SIGNUP ===== -->
       <div id="signupSection" style="display:none">
 
         <!-- Step 1: Details -->
@@ -152,7 +149,7 @@
         <div id="signupStep2" style="display:none">
           <div class="auth-form">
             <div class="form-group">
-              <label style="text-align:center;display:block;">Enter 6-digit OTP sent to <b id="signupPhoneDisplay"></b></label>
+              <label style="text-align:center;display:block;">Enter 6-digit OTP sent to <b id="signupDisplay"></b></label>
               <div class="otp-group" style="gap:8px;">
                 <input class="otp-input" maxlength="1" oninput="otpNext(this,0,'s')" onkeydown="otpBack(event,0,'s')" id="s0"/>
                 <input class="otp-input" maxlength="1" oninput="otpNext(this,1,'s')" onkeydown="otpBack(event,1,'s')" id="s1"/>
@@ -183,10 +180,10 @@
   </div>
 </div>
 
-<script src="../js/api.js?v=2"></script>
 <script>
-  const API = 'http://localhost/drithi-agro/backend/index.php?route=';
-  let timers = {};
+  const API    = 'http://localhost/drithi-agro/backend/index.php?route=';
+  let timers   = {};
+  let loginMode = 'phone';
 
   // Redirect if already logged in
   if (localStorage.getItem('da_token')) location.href = 'account.html';
@@ -201,10 +198,10 @@
     hideMsg();
   }
 
-  // ── Step indicator ──
+  // ── Steps ──
   function updateSteps(total, current) {
-    document.getElementById('line2').style.display  = total === 3 ? 'flex' : 'none';
-    document.getElementById('step3').style.display  = total === 3 ? 'flex' : 'none';
+    document.getElementById('line2').style.display = total === 3 ? 'flex' : 'none';
+    document.getElementById('step3').style.display = total === 3 ? 'flex' : 'none';
     [1,2,3].forEach(i => {
       const s = document.getElementById('step'+i);
       if (s) s.className = 'step' + (i < current ? ' done' : i === current ? ' active' : '');
@@ -227,45 +224,43 @@
     }
   }
 
-  // ── Message helpers ──
+  // ── Message ──
   function showMsg(msg, type = 'error') {
     const el = document.getElementById('authMsg');
     el.textContent = msg;
-    el.style.display = 'block';
+    el.style.display    = 'block';
     el.style.background = type === 'error' ? '#ffebee' : '#e8f5e9';
-    el.style.color       = type === 'error' ? '#c62828' : '#1b5e20';
+    el.style.color      = type === 'error' ? '#c62828' : '#1b5e20';
   }
   function hideMsg() { document.getElementById('authMsg').style.display = 'none'; }
 
-  // ── Login mode (phone / email) ──
-  let loginMode = 'phone';
+  // ── Login mode toggle ──
   function setLoginMode(mode) {
     loginMode = mode;
     document.getElementById('phoneInputWrap').style.display = mode === 'phone' ? 'block' : 'none';
     document.getElementById('emailInputWrap').style.display = mode === 'email' ? 'block' : 'none';
-    document.getElementById('loginByPhone').style.background = mode === 'phone' ? '#2e7d32' : 'transparent';
-    document.getElementById('loginByPhone').style.color      = mode === 'phone' ? 'white'   : '#666';
-    document.getElementById('loginByEmail').style.background = mode === 'email' ? '#2e7d32' : 'transparent';
-    document.getElementById('loginByEmail').style.color      = mode === 'email' ? 'white'   : '#666';
+    document.getElementById('loginByPhone').style.cssText = mode === 'phone'
+      ? 'flex:1;padding:8px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:#2e7d32;color:white;'
+      : 'flex:1;padding:8px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:#666;';
+    document.getElementById('loginByEmail').style.cssText = mode === 'email'
+      ? 'flex:1;padding:8px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:#2e7d32;color:white;'
+      : 'flex:1;padding:8px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:#666;';
     hideMsg();
   }
 
   // ── Validation ──
-  function validatePhone(val) { return /^[6-9]\d{9}$/.test(val); }
+  function validatePhone(v) { return /^[6-9]\d{9}$/.test(v); }
+  function validateEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
 
-  // ── OTP input navigation ──
-  function otpNext(el, idx, prefix) {
+  // ── OTP inputs ──
+  function otpNext(el, idx, p) {
     el.value = el.value.replace(/\D/g, '');
-    if (el.value && idx < 5) document.getElementById(prefix + (idx+1)).focus();
+    if (el.value && idx < 5) document.getElementById(p+(idx+1)).focus();
   }
-  function otpBack(e, idx, prefix) {
-    if (e.key === 'Backspace' && !e.target.value && idx > 0) {
-      document.getElementById(prefix + (idx-1)).focus();
-    }
+  function otpBack(e, idx, p) {
+    if (e.key === 'Backspace' && !e.target.value && idx > 0) document.getElementById(p+(idx-1)).focus();
   }
-  function getOtp(prefix) {
-    return [0,1,2,3,4,5].map(i => document.getElementById(prefix+i).value).join('');
-  }
+  function getOtp(p) { return [0,1,2,3,4,5].map(i => document.getElementById(p+i).value).join(''); }
 
   // ── Timer ──
   function startTimer(countdownId, timerId, resendFn) {
@@ -284,47 +279,54 @@
     }, 1000);
   }
 
-  // ── Loading state ──
-  function setLoading(btnId, loading, text) {
-    const btn = document.getElementById(btnId);
-    btn.disabled = loading;
-    btn.textContent = loading ? '⏳ Please wait...' : text;
+  // ── Button loading ──
+  function setLoading(id, on, label) {
+    const b = document.getElementById(id);
+    b.disabled = on;
+    b.textContent = on ? '⏳ Please wait...' : label;
   }
 
   // ============================================================
-  // LOGIN
+  // LOGIN — Send OTP
   // ============================================================
   async function sendLoginOTP() {
-    let mobile = '';
+    hideMsg();
+    let payload = { action: 'send_otp' };
+    let display = '';
+
     if (loginMode === 'phone') {
-      mobile = document.getElementById('loginPhone').value.trim();
-      if (!validatePhone(mobile)) { showMsg('Please enter a valid 10-digit mobile number.'); return; }
+      const mobile = document.getElementById('loginPhone').value.trim();
+      if (!validatePhone(mobile)) { showMsg('Enter a valid 10-digit mobile number.'); return; }
+      payload.mobile = mobile;
+      display = '+91 ' + mobile;
     } else {
       const email = document.getElementById('loginEmail').value.trim();
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showMsg('Please enter a valid email address.'); return; }
-      // Use email as mobile placeholder — backend matches on mobile; for email login store it
-      // In dev mode we show OTP directly, production would need email OTP delivery
-      mobile = email; // will fail mobile validation on backend — show note
-      showMsg('Email OTP login: In production, OTP will be sent to your email. Using phone OTP for now.', 'success');
-      setLoginMode('phone');
-      return;
+      if (!validateEmail(email)) { showMsg('Enter a valid email address.'); return; }
+      payload.email = email;
+      display = email;
     }
+
     setLoading('loginOtpBtn', true, 'Send OTP →');
-    hideMsg();
     try {
       const res = await fetch(API + 'auth', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'send_otp', mobile })
+        body: JSON.stringify(payload)
       }).then(r => r.json());
+
       if (res.success) {
-        document.getElementById('loginPhoneDisplay').textContent = '+91 ' + mobile;
-        if (res.data?.otp) showMsg('Dev OTP: ' + res.data.otp, 'success');
+        document.getElementById('loginDisplay').textContent = display;
+        // Show OTP in dev mode (when SMS/Email credentials not configured)
+        if (res.data?.otp) {
+          showMsg('Dev Mode — OTP: ' + res.data.otp, 'success');
+        } else {
+          showMsg('OTP sent to ' + display, 'success');
+        }
         switchStep('login', 2);
         startTimer('loginCountdown', 'loginTimer', 'resendLoginOTP');
         document.getElementById('l0').focus();
       } else {
-        showMsg(res.message || 'Failed to send OTP. Try again.');
+        showMsg(res.message || 'Failed to send OTP.');
       }
     } catch(e) {
       showMsg('Network error. Make sure the server is running.');
@@ -333,36 +335,30 @@
   }
 
   async function resendLoginOTP() {
-    const phone = document.getElementById('loginPhone').value.trim();
-    await sendLoginOTPDirect(phone);
+    await sendLoginOTP();
   }
 
-  async function sendLoginOTPDirect(phone) {
-    hideMsg();
-    const res = await fetch(API + 'auth', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'send_otp', mobile: phone })
-    }).then(r => r.json());
-    if (res.success) {
-      if (res.data?.otp) showMsg('Dev OTP: ' + res.data.otp, 'success');
-      startTimer('loginCountdown', 'loginTimer', 'resendLoginOTP');
-    } else {
-      showMsg(res.message || 'Failed to resend OTP.');
-    }
-  }
-
+  // ============================================================
+  // LOGIN — Verify OTP
+  // ============================================================
   async function verifyLoginOTP() {
-    const phone = document.getElementById('loginPhone').value.trim();
-    const otp   = getOtp('l');
-    if (otp.length < 6) { showMsg('Please enter the complete 6-digit OTP.'); return; }
+    const otp = getOtp('l');
+    if (otp.length < 6) { showMsg('Enter the complete 6-digit OTP.'); return; }
+
+    let payload = { action: 'verify_otp', otp };
+    if (loginMode === 'phone') {
+      payload.mobile = document.getElementById('loginPhone').value.trim();
+    } else {
+      payload.email = document.getElementById('loginEmail').value.trim();
+    }
+
     setLoading('loginVerifyBtn', true, '✅ Verify & Login');
     hideMsg();
     try {
       const res = await fetch(API + 'auth', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'verify_otp', mobile: phone, otp })
+        body: JSON.stringify(payload)
       }).then(r => r.json());
 
       if (res.success) {
@@ -370,7 +366,7 @@
         localStorage.setItem('da_user', JSON.stringify(res.data.user));
         location.href = 'account.html';
       } else {
-        showMsg(res.message || 'Invalid OTP. Please try again.');
+        showMsg(res.message || 'Invalid OTP. Try again.');
       }
     } catch(e) {
       showMsg('Network error. Make sure the server is running.');
@@ -379,16 +375,16 @@
   }
 
   // ============================================================
-  // SIGNUP
+  // SIGNUP — Send OTP
   // ============================================================
   async function sendSignupOTP() {
     const name  = document.getElementById('signupName').value.trim();
     const email = document.getElementById('signupEmail').value.trim();
     const phone = document.getElementById('signupPhone').value.trim();
     hideMsg();
-    if (!name)              { showMsg('Please enter your full name.'); return; }
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showMsg('Please enter a valid email address.'); return; }
-    if (!validatePhone(phone)) { showMsg('Please enter a valid 10-digit mobile number.'); return; }
+    if (!name)               { showMsg('Enter your full name.'); return; }
+    if (!validateEmail(email)) { showMsg('Enter a valid email address.'); return; }
+    if (!validatePhone(phone)) { showMsg('Enter a valid 10-digit mobile number.'); return; }
 
     setLoading('signupOtpBtn', true, 'Send OTP →');
     try {
@@ -399,13 +395,17 @@
       }).then(r => r.json());
 
       if (res.success) {
-        document.getElementById('signupPhoneDisplay').textContent = '+91 ' + phone;
-        if (res.data?.otp) showMsg('Dev OTP: ' + res.data.otp, 'success');
+        document.getElementById('signupDisplay').textContent = '+91 ' + phone;
+        if (res.data?.otp) {
+          showMsg('Dev Mode — OTP: ' + res.data.otp, 'success');
+        } else {
+          showMsg('OTP sent to +91 ' + phone, 'success');
+        }
         switchStep('signup', 2);
         startTimer('signupCountdown', 'signupTimer', 'resendSignupOTP');
         document.getElementById('s0').focus();
       } else {
-        showMsg(res.message || 'Failed to send OTP. Try again.');
+        showMsg(res.message || 'Failed to send OTP.');
       }
     } catch(e) {
       showMsg('Network error. Make sure the server is running.');
@@ -422,19 +422,22 @@
       body: JSON.stringify({ action: 'send_otp', mobile: phone, purpose: 'REGISTER' })
     }).then(r => r.json());
     if (res.success) {
-      if (res.data?.otp) showMsg('Dev OTP: ' + res.data.otp, 'success');
+      if (res.data?.otp) showMsg('Dev Mode — OTP: ' + res.data.otp, 'success');
       startTimer('signupCountdown', 'signupTimer', 'resendSignupOTP');
     } else {
       showMsg(res.message || 'Failed to resend OTP.');
     }
   }
 
+  // ============================================================
+  // SIGNUP — Verify OTP & Create Account
+  // ============================================================
   async function verifySignupOTP() {
     const otp   = getOtp('s');
     const name  = document.getElementById('signupName').value.trim();
     const email = document.getElementById('signupEmail').value.trim();
     const phone = document.getElementById('signupPhone').value.trim();
-    if (otp.length < 6) { showMsg('Please enter the complete 6-digit OTP.'); return; }
+    if (otp.length < 6) { showMsg('Enter the complete 6-digit OTP.'); return; }
     setLoading('signupVerifyBtn', true, '✅ Create Account');
     hideMsg();
     try {
@@ -447,11 +450,11 @@
       if (res.success) {
         localStorage.setItem('da_token', res.data.token);
         localStorage.setItem('da_user', JSON.stringify({ mobile: phone, full_name: name, email }));
-        document.getElementById('welcomeMsg').textContent = `Hello ${name}! Your account has been created. Happy farming! 🌾`;
+        document.getElementById('welcomeMsg').textContent = `Hello ${name}! Your account is ready. Happy farming! 🌾`;
         switchStep('signup', 3);
         updateSteps(3, 3);
       } else {
-        showMsg(res.message || 'Registration failed. Please try again.');
+        showMsg(res.message || 'Registration failed. Try again.');
       }
     } catch(e) {
       showMsg('Network error. Make sure the server is running.');
