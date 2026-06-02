@@ -71,15 +71,26 @@
       <!-- ==================== LOGIN ==================== -->
       <div id="loginSection">
 
-        <!-- Step 1: Phone -->
+        <!-- Step 1: Phone or Email -->
         <div id="loginStep1">
           <div class="auth-form">
-            <div class="form-group">
+            <!-- MODE TOGGLE -->
+            <div style="display:flex;background:#f5f5f5;border-radius:10px;padding:4px;margin-bottom:16px;">
+              <button id="loginByPhone" onclick="setLoginMode('phone')" style="flex:1;padding:8px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:#2e7d32;color:white;transition:all 0.2s;">📱 Mobile OTP</button>
+              <button id="loginByEmail" onclick="setLoginMode('email')" style="flex:1;padding:8px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:#666;transition:all 0.2s;">📧 Email OTP</button>
+            </div>
+            <!-- PHONE -->
+            <div class="form-group" id="phoneInputWrap">
               <label>📱 Mobile Number</label>
               <div class="phone-input">
                 <span class="country-code">🇮🇳 +91</span>
                 <input type="tel" id="loginPhone" placeholder="Enter 10-digit mobile number" maxlength="10"/>
               </div>
+            </div>
+            <!-- EMAIL -->
+            <div class="form-group" id="emailInputWrap" style="display:none;">
+              <label>📧 Email Address</label>
+              <input type="email" id="loginEmail" placeholder="Enter your email address" style="width:100%;padding:11px 14px;border:2px solid #e0e0e0;border-radius:10px;font-size:14px;outline:none;"/>
             </div>
             <button class="submit-btn" id="loginOtpBtn" onclick="sendLoginOTP()">Send OTP →</button>
             <p style="text-align:center;font-size:12px;color:#999;margin-top:8px;">
@@ -226,6 +237,19 @@
   }
   function hideMsg() { document.getElementById('authMsg').style.display = 'none'; }
 
+  // ── Login mode (phone / email) ──
+  let loginMode = 'phone';
+  function setLoginMode(mode) {
+    loginMode = mode;
+    document.getElementById('phoneInputWrap').style.display = mode === 'phone' ? 'block' : 'none';
+    document.getElementById('emailInputWrap').style.display = mode === 'email' ? 'block' : 'none';
+    document.getElementById('loginByPhone').style.background = mode === 'phone' ? '#2e7d32' : 'transparent';
+    document.getElementById('loginByPhone').style.color      = mode === 'phone' ? 'white'   : '#666';
+    document.getElementById('loginByEmail').style.background = mode === 'email' ? '#2e7d32' : 'transparent';
+    document.getElementById('loginByEmail').style.color      = mode === 'email' ? 'white'   : '#666';
+    hideMsg();
+  }
+
   // ── Validation ──
   function validatePhone(val) { return /^[6-9]\d{9}$/.test(val); }
 
@@ -271,20 +295,30 @@
   // LOGIN
   // ============================================================
   async function sendLoginOTP() {
-    const phone = document.getElementById('loginPhone').value.trim();
-    if (!validatePhone(phone)) { showMsg('Please enter a valid 10-digit mobile number.'); return; }
+    let mobile = '';
+    if (loginMode === 'phone') {
+      mobile = document.getElementById('loginPhone').value.trim();
+      if (!validatePhone(mobile)) { showMsg('Please enter a valid 10-digit mobile number.'); return; }
+    } else {
+      const email = document.getElementById('loginEmail').value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showMsg('Please enter a valid email address.'); return; }
+      // Use email as mobile placeholder — backend matches on mobile; for email login store it
+      // In dev mode we show OTP directly, production would need email OTP delivery
+      mobile = email; // will fail mobile validation on backend — show note
+      showMsg('Email OTP login: In production, OTP will be sent to your email. Using phone OTP for now.', 'success');
+      setLoginMode('phone');
+      return;
+    }
     setLoading('loginOtpBtn', true, 'Send OTP →');
     hideMsg();
     try {
       const res = await fetch(API + 'auth', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'send_otp', mobile: phone })
+        body: JSON.stringify({ action: 'send_otp', mobile })
       }).then(r => r.json());
-
       if (res.success) {
-        document.getElementById('loginPhoneDisplay').textContent = '+91 ' + phone;
-        // Dev mode: show OTP in message
+        document.getElementById('loginPhoneDisplay').textContent = '+91 ' + mobile;
         if (res.data?.otp) showMsg('Dev OTP: ' + res.data.otp, 'success');
         switchStep('login', 2);
         startTimer('loginCountdown', 'loginTimer', 'resendLoginOTP');
