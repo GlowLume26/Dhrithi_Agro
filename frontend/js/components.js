@@ -30,7 +30,7 @@ function renderHeader(activePage = '') {
       <!-- CATEGORIES MENU BUTTON (beside search) -->
       <div class="cat-menu-wrap">
         <button class="cat-menu-btn" onclick="toggleCatMenu()" id="catMenuBtn">
-          <span>☰</span> Categories
+          ☰
         </button>
         <!-- MEGA DROPDOWN -->
         <div class="cat-dropdown" id="catDropdown">
