@@ -4,7 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Categories - Drithi Agro</title>
-  <link rel="stylesheet" href="../css/style.css?v=2"/>
+  <link rel="stylesheet" href="../css/style.css?v=3"/>
   <style>
     .page-banner {
       background: linear-gradient(135deg, #1b5e20, #2e7d32);
@@ -23,27 +23,127 @@
 
     .categories-page { display: grid; grid-template-columns: 260px 1fr; gap: 30px; padding: 40px; }
 
-    /* SIDEBAR */
-    .sidebar { display: flex; flex-direction: column; gap: 20px; }
-    .sidebar-card { background: white; border-radius: 14px; padding: 20px; box-shadow: 0 4px 16px rgba(0,0,0,0.07); }
-    .sidebar-card h3 { font-size: 15px; font-weight: 700; color: #1b5e20; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid #e8f5e9; }
-    .filter-list { display: flex; flex-direction: column; gap: 8px; }
-    .filter-item {
-      display: flex; align-items: center; gap: 10px; padding: 8px 10px;
-      border-radius: 8px; cursor: pointer; transition: background 0.2s; font-size: 13px;
+    /* ── NEW ACCORDION SIDEBAR ── */
+    .sidebar {
+      width: 260px; flex-shrink: 0;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+      overflow: hidden;
+      align-self: flex-start;
+      position: sticky;
+      top: 80px;
     }
-    .filter-item:hover { background: #f1f8e9; }
-    .filter-item input[type=checkbox] { accent-color: #2e7d32; width: 16px; height: 16px; }
-    .filter-item .fi-count { margin-left: auto; background: #e8f5e9; color: #2e7d32; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
-    .price-range { display: flex; flex-direction: column; gap: 10px; }
-    .price-range input[type=range] { accent-color: #2e7d32; width: 100%; }
-    .price-labels { display: flex; justify-content: space-between; font-size: 12px; color: #666; }
-    .apply-filter {
-      background: #2e7d32; color: white; border: none; padding: 10px;
-      border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; width: 100%;
+
+    /* Sidebar search */
+    .sb-search {
+      display: flex; align-items: center;
+      padding: 14px 16px;
+      border-bottom: 1px solid #f0f0f0;
+      gap: 8px;
+    }
+    .sb-search input {
+      flex: 1; border: none; outline: none;
+      font-size: 13px; color: #333;
+      background: transparent;
+      font-family: inherit;
+    }
+    .sb-search input::placeholder { color: #aaa; }
+    .sb-search-btn {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: #f97316; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; flex-shrink: 0;
       transition: background 0.2s;
     }
-    .apply-filter:hover { background: #1b5e20; }
+    .sb-search-btn:hover { background: #ea6c00; }
+
+    /* Accordion items */
+    .sb-item {
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .sb-item:last-child { border-bottom: none; }
+    .sb-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 18px;
+      cursor: pointer;
+      transition: background 0.15s;
+      user-select: none;
+    }
+    .sb-header:hover { background: #fafafa; }
+    .sb-header.open { background: #fff8f3; }
+    .sb-label {
+      font-size: 13.5px; font-weight: 500; color: #333;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .sb-label .sb-icon {
+      width: 28px; height: 28px; border-radius: 7px;
+      background: #f5f5f5;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; flex-shrink: 0;
+    }
+    .sb-header.open .sb-label .sb-icon { background: #fff3e0; }
+    .sb-arrow {
+      font-size: 11px; color: #bbb;
+      transition: transform 0.25s;
+      flex-shrink: 0;
+    }
+    .sb-header.open .sb-arrow { transform: rotate(180deg); color: #f97316; }
+
+    /* Submenu */
+    .sb-sub {
+      display: none;
+      background: #fafafa;
+      border-top: 1px solid #f0f0f0;
+    }
+    .sb-sub.open { display: block; }
+    .sb-sub-item {
+      padding: 10px 18px 10px 46px;
+      font-size: 13px; color: #555;
+      cursor: pointer;
+      border-bottom: 1px solid #f5f5f5;
+      transition: all 0.15s;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .sb-sub-item:last-child { border-bottom: none; }
+    .sb-sub-item:hover { background: #fff3e0; color: #f97316; padding-left: 52px; }
+    .sb-sub-item.active { background: #fff3e0; color: #f97316; font-weight: 600; }
+    .sb-sub-item::before {
+      content: '';
+      width: 5px; height: 5px; border-radius: 50%;
+      background: #ddd; flex-shrink: 0;
+    }
+    .sb-sub-item:hover::before,
+    .sb-sub-item.active::before { background: #f97316; }
+
+    /* Mobile sidebar toggle */
+    .sb-toggle-btn {
+      display: none;
+      position: fixed; bottom: 20px; left: 20px;
+      background: #f97316; color: white;
+      border: none; border-radius: 50px;
+      padding: 12px 20px; font-size: 13px; font-weight: 700;
+      cursor: pointer; z-index: 999;
+      box-shadow: 0 4px 16px rgba(249,115,22,0.4);
+    }
+    .sb-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.4); z-index: 997;
+    }
+    .sb-overlay.open { display: block; }
+
+    @media (max-width: 900px) {
+      .categories-page { grid-template-columns: 1fr !important; }
+      .sidebar {
+        display: none;
+        position: fixed; top: 0; left: 0;
+        width: 280px; height: 100vh;
+        border-radius: 0; z-index: 998;
+        overflow-y: auto;
+      }
+      .sidebar.mobile-open { display: block !important; }
+      .sb-toggle-btn { display: flex; align-items: center; gap: 8px; }
+    }
 
     /* MAIN CONTENT */
     .cat-main { display: flex; flex-direction: column; gap: 30px; }
@@ -168,49 +268,157 @@
 
 <div class="categories-page">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="sidebar-card">
-      <h3>🗂️ Categories</h3>
-      <div class="filter-list">
-        <label class="filter-item" onclick="filterByParent(1)"><input type="radio" name="cat"/> 💧 Irrigation</label>
-        <label class="filter-item" onclick="filterByParent(2)"><input type="radio" name="cat"/> 🌿 Gardening</label>
-        <label class="filter-item" onclick="filterByParent(3)"><input type="radio" name="cat"/> 🐄 Cattle & Bird Care</label>
+  <!-- NEW ACCORDION SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+
+    <!-- Search -->
+    <div class="sb-search">
+      <input type="text" id="sbSearch" placeholder="Search categories..." oninput="filterSbItems(this.value)"/>
+      <button class="sb-search-btn" onclick="filterSbItems(document.getElementById('sbSearch').value)">🔍</button>
+    </div>
+
+    <!-- Brands -->
+    <div class="sb-item">
+      <div class="sb-header" onclick="toggleSb(this)">
+        <span class="sb-label"><span class="sb-icon">🏷️</span> Brands</span>
+        <span class="sb-arrow">▼</span>
+      </div>
+      <div class="sb-sub">
+        <div class="sb-sub-item" onclick="filterByBrand('syngenta')">Syngenta India</div>
+        <div class="sb-sub-item" onclick="filterByBrand('bayer')">Bayer CropScience</div>
+        <div class="sb-sub-item" onclick="filterByBrand('iffco')">IFFCO</div>
+        <div class="sb-sub-item" onclick="filterByBrand('upl')">UPL Limited</div>
+        <div class="sb-sub-item" onclick="filterByBrand('pi-industries')">PI Industries</div>
+        <div class="sb-sub-item" onclick="filterByBrand('mahyco')">Mahyco Seeds</div>
+        <div class="sb-sub-item" onclick="filterByBrand('jain-irrigation')">Jain Irrigation</div>
+        <div class="sb-sub-item" onclick="filterByBrand('anand-agro')">Anand Agro</div>
+        <div class="sb-sub-item" onclick="filterByBrand('noble-crop')">Noble Crop Science</div>
+        <div class="sb-sub-item" onclick="filterByBrand('coromandel')">Coromandel</div>
       </div>
     </div>
 
-    <div class="sidebar-card">
-      <h3>💰 Price Range</h3>
-      <div class="price-range">
-        <input type="range" min="0" max="5000" value="2500" id="priceRange" oninput="document.getElementById('priceVal').textContent='₹'+this.value"/>
-        <div class="price-labels"><span>₹0</span><span id="priceVal">₹2,500</span><span>₹5,000</span></div>
+    <!-- Seeds -->
+    <div class="sb-item">
+      <div class="sb-header" onclick="toggleSb(this)">
+        <span class="sb-label"><span class="sb-icon">🌱</span> Seeds</span>
+        <span class="sb-arrow">▼</span>
+      </div>
+      <div class="sb-sub">
+        <div class="sb-sub-item" onclick="filterBySub(14)">Gardening Seeds</div>
+        <div class="sb-sub-item" onclick="filterBySub(23)">Flower Seeds</div>
+        <div class="sb-sub-item" onclick="filterBySub(26)">Fodder Seed</div>
+        <div class="sb-sub-item" onclick="filterByParent(2)">All Seeds</div>
       </div>
     </div>
 
-    <div class="sidebar-card">
-      <h3>🏭 Brands</h3>
-      <div class="filter-list">
-        <label class="filter-item"><input type="checkbox"/> Bayer CropScience</label>
-        <label class="filter-item"><input type="checkbox"/> IFFCO</label>
-        <label class="filter-item"><input type="checkbox"/> Syngenta</label>
-        <label class="filter-item"><input type="checkbox"/> UPL Limited</label>
-        <label class="filter-item"><input type="checkbox"/> PI Industries</label>
-        <label class="filter-item"><input type="checkbox"/> Mahyco Seeds</label>
-        <label class="filter-item"><input type="checkbox"/> Anand Agro</label>
+    <!-- Crop Protection -->
+    <div class="sb-item">
+      <div class="sb-header" onclick="toggleSb(this)">
+        <span class="sb-label"><span class="sb-icon">🛡️</span> Crop Protection</span>
+        <span class="sb-arrow">▼</span>
+      </div>
+      <div class="sb-sub">
+        <div class="sb-sub-item" onclick="filterBySub(16)">Pesticides</div>
+        <div class="sb-sub-item" onclick="filterBySub(10)">Spray Pumps</div>
+        <div class="sb-sub-item" onclick="filterBySub(17)">Garden Shade Net</div>
+        <div class="sb-sub-item" onclick="filterBySub(29)">Mosquito Net</div>
       </div>
     </div>
 
-    <div class="sidebar-card">
-      <h3>⭐ Rating</h3>
-      <div class="filter-list">
-        <label class="filter-item"><input type="checkbox"/> ★★★★★ 5 Star</label>
-        <label class="filter-item"><input type="checkbox"/> ★★★★☆ 4 Star & above</label>
-        <label class="filter-item"><input type="checkbox"/> ★★★☆☆ 3 Star & above</label>
+    <!-- Crop Nutrition -->
+    <div class="sb-item">
+      <div class="sb-header" onclick="toggleSb(this)">
+        <span class="sb-label"><span class="sb-icon">🧪</span> Crop Nutrition</span>
+        <span class="sb-arrow">▼</span>
+      </div>
+      <div class="sb-sub">
+        <div class="sb-sub-item" onclick="filterBySub(15)">Fertilizer</div>
+        <div class="sb-sub-item" onclick="filterBySub(24)">Fertilizer Blend</div>
+        <div class="sb-sub-item" onclick="filterBySub(18)">Coco Peat</div>
+        <div class="sb-sub-item" onclick="filterBySub(19)">Water Compost Management</div>
+        <div class="sb-sub-item" onclick="filterBySub(22)">De Oiled Cake</div>
       </div>
     </div>
 
-    <button class="apply-filter">✅ Apply Filters</button>
+    <!-- Equipments -->
+    <div class="sb-item">
+      <div class="sb-header" onclick="toggleSb(this)">
+        <span class="sb-label"><span class="sb-icon">⚙️</span> Equipments</span>
+        <span class="sb-arrow">▼</span>
+      </div>
+      <div class="sb-sub">
+        <div class="sb-sub-item" onclick="filterBySub(9)">Tools</div>
+        <div class="sb-sub-item" onclick="filterBySub(11)">Lawn Mowers</div>
+        <div class="sb-sub-item" onclick="filterBySub(20)">Gardening Kit</div>
+        <div class="sb-sub-item" onclick="filterByParent(1)">Irrigation Equipment</div>
+        <div class="sb-sub-item" onclick="filterBySub(7)">Drip Irrigation Kit</div>
+        <div class="sb-sub-item" onclick="filterBySub(4)">Sprinkler</div>
+        <div class="sb-sub-item" onclick="filterBySub(6)">Pipe & Fitting</div>
+      </div>
+    </div>
+
+    <!-- Animal Husbandry -->
+    <div class="sb-item">
+      <div class="sb-header" onclick="toggleSb(this)">
+        <span class="sb-label"><span class="sb-icon">🐄</span> Animal Husbandry</span>
+        <span class="sb-arrow">▼</span>
+      </div>
+      <div class="sb-sub">
+        <div class="sb-sub-item" onclick="filterBySub(27)">Mineral Mixture</div>
+        <div class="sb-sub-item" onclick="filterBySub(28)">Bird Food</div>
+        <div class="sb-sub-item" onclick="filterBySub(32)">Goat & Sheep Care</div>
+        <div class="sb-sub-item" onclick="filterBySub(33)">Poultry Feed Supplements</div>
+        <div class="sb-sub-item" onclick="filterBySub(34)">Swine Supplement</div>
+        <div class="sb-sub-item" onclick="filterBySub(36)">Animal Health Supplements</div>
+        <div class="sb-sub-item" onclick="filterBySub(35)">Silage Bag</div>
+      </div>
+    </div>
+
+    <!-- Organic -->
+    <div class="sb-item">
+      <div class="sb-header" onclick="toggleSb(this)">
+        <span class="sb-label"><span class="sb-icon">🌿</span> Organic</span>
+        <span class="sb-arrow">▼</span>
+      </div>
+      <div class="sb-sub">
+        <div class="sb-sub-item" onclick="filterBySub(19)">Water Compost Management</div>
+        <div class="sb-sub-item" onclick="filterBySub(18)">Coco Peat</div>
+        <div class="sb-sub-item" onclick="filterBySub(22)">De Oiled Cake</div>
+        <div class="sb-sub-item" onclick="filterBySub(31)">Aquaculture Feed Additives</div>
+      </div>
+    </div>
+
+    <!-- TAPAS -->
+    <div class="sb-item">
+      <div class="sb-header" onclick="toggleSb(this)">
+        <span class="sb-label"><span class="sb-icon">⭐</span> TAPAS</span>
+        <span class="sb-arrow">▼</span>
+      </div>
+      <div class="sb-sub">
+        <div class="sb-sub-item" onclick="loadProducts({sort:'avg_rating',order:'desc'})">Top Rated</div>
+        <div class="sb-sub-item" onclick="loadProducts({sort:'sold_count',order:'desc'})">Best Sellers</div>
+        <div class="sb-sub-item" onclick="loadProducts({sort:'created_at',order:'desc'})">New Arrivals</div>
+      </div>
+    </div>
+
+    <!-- Services -->
+    <div class="sb-item">
+      <div class="sb-header" onclick="toggleSb(this)">
+        <span class="sb-label"><span class="sb-icon">🛎️</span> Services</span>
+        <span class="sb-arrow">▼</span>
+      </div>
+      <div class="sb-sub">
+        <div class="sb-sub-item" onclick="location.href='../pages/contact.html'">Expert Consultation</div>
+        <div class="sb-sub-item" onclick="location.href='../pages/vendor-register.html'">Sell With Us</div>
+        <div class="sb-sub-item" onclick="location.href='../pages/orders.html'">Track My Order</div>
+      </div>
+    </div>
+
   </aside>
+
+  <!-- Mobile sidebar overlay & toggle -->
+  <div class="sb-overlay" id="sbOverlay" onclick="closeMobileSidebar()"></div>
+  <button class="sb-toggle-btn" onclick="openMobileSidebar()">☰ Categories</button>
 
   <!-- MAIN -->
   <div class="cat-main">
@@ -333,113 +541,14 @@
 
     <!-- PRODUCTS -->
     <div class="products-section">
-      <h2>🔥 Featured Products</h2>
-      <div class="products-grid-4">
-
-        <div class="product-card">
-          <span class="product-badge">Best Seller</span>
-          <button class="product-wish" onclick="toggleWish(this)">🤍</button>
-          <div class="product-img"><img src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=400&q=80" alt=""/></div>
-          <div class="product-info">
-            <h4>Hybrid Tomato Seeds F1 - High Yield</h4>
-            <div class="brand">Syngenta • 10g</div>
-            <div class="product-price"><span class="price">₹299</span><span class="old">₹450</span><span class="disc">33% OFF</span></div>
-            <button class="add-cart" onclick="addToCart('Hybrid Tomato Seeds')">🛒 Add to Cart</button>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <span class="product-badge" style="background:#e65100;">Organic</span>
-          <button class="product-wish" onclick="toggleWish(this)">🤍</button>
-          <div class="product-img"><img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=400&q=80" alt=""/></div>
-          <div class="product-info">
-            <h4>Vermicompost Organic Manure Premium</h4>
-            <div class="brand">Katyayani • 950g</div>
-            <div class="product-price"><span class="price">₹414</span><span class="old">₹550</span><span class="disc">25% OFF</span></div>
-            <button class="add-cart" onclick="addToCart('Vermicompost')">🛒 Add to Cart</button>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <span class="product-badge" style="background:#e53935;">Hot Deal</span>
-          <button class="product-wish" onclick="toggleWish(this)">🤍</button>
-          <div class="product-img"><img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80" alt=""/></div>
-          <div class="product-info">
-            <h4>NPK 19:19:19 Water Soluble Fertilizer</h4>
-            <div class="brand">IFFCO • 1kg</div>
-            <div class="product-price"><span class="price">₹185</span><span class="old">₹220</span><span class="disc">16% OFF</span></div>
-            <button class="add-cart" onclick="addToCart('NPK Fertilizer')">🛒 Add to Cart</button>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <button class="product-wish" onclick="toggleWish(this)">🤍</button>
-          <div class="product-img"><img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=400&q=80" alt=""/></div>
-          <div class="product-info">
-            <h4>Neem Oil 10000 PPM Bio Insecticide</h4>
-            <div class="brand">Anand Agro • 1L</div>
-            <div class="product-price"><span class="price">₹840</span><span class="old">₹1100</span><span class="disc">24% OFF</span></div>
-            <button class="add-cart" onclick="addToCart('Neem Oil')">🛒 Add to Cart</button>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <span class="product-badge">New</span>
-          <button class="product-wish" onclick="toggleWish(this)">🤍</button>
-          <div class="product-img"><img src="https://images.unsplash.com/photo-1560493676-04071c5f467b?w=400&q=80" alt=""/></div>
-          <div class="product-info">
-            <h4>Drip Irrigation Kit for 1 Acre</h4>
-            <div class="brand">Jain Irrigation • 1 Set</div>
-            <div class="product-price"><span class="price">₹3,499</span><span class="old">₹4,500</span><span class="disc">22% OFF</span></div>
-            <button class="add-cart" onclick="addToCart('Drip Irrigation Kit')">🛒 Add to Cart</button>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <button class="product-wish" onclick="toggleWish(this)">🤍</button>
-          <div class="product-img"><img src="https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=400&q=80" alt=""/></div>
-          <div class="product-info">
-            <h4>Humic Acid 98% Potassium Humate</h4>
-            <div class="brand">Noble Crop • 300g</div>
-            <div class="product-price"><span class="price">₹261</span><span class="old">₹350</span><span class="disc">25% OFF</span></div>
-            <button class="add-cart" onclick="addToCart('Humic Acid')">🛒 Add to Cart</button>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <span class="product-badge" style="background:#7b1fa2;">Combo</span>
-          <button class="product-wish" onclick="toggleWish(this)">🤍</button>
-          <div class="product-img"><img src="https://images.unsplash.com/photo-1586771107445-d3ca888129ff?w=400&q=80" alt=""/></div>
-          <div class="product-info">
-            <h4>Khurpi + Trowel + Pruner Garden Kit</h4>
-            <div class="brand">AgriTools • 3 Piece Set</div>
-            <div class="product-price"><span class="price">₹549</span><span class="old">₹750</span><span class="disc">27% OFF</span></div>
-            <button class="add-cart" onclick="addToCart('Garden Kit')">🛒 Add to Cart</button>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <button class="product-wish" onclick="toggleWish(this)">🤍</button>
-          <div class="product-img"><img src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=400&q=80" alt=""/></div>
-          <div class="product-info">
-            <h4>Imidacloprid 17.8% SL Insecticide</h4>
-            <div class="brand">Bayer • 500ml</div>
-            <div class="product-price"><span class="price">₹420</span><span class="old">₹580</span><span class="disc">28% OFF</span></div>
-            <button class="add-cart" onclick="addToCart('Imidacloprid')">🛒 Add to Cart</button>
-          </div>
-        </div>
-
+      <h2 id="productsTitle">🔥 Featured Products</h2>
+      <div class="products-grid-4" id="productsGrid">
+        <!-- Products will be loaded from backend -->
       </div>
 
       <!-- PAGINATION -->
-      <div class="pagination">
-        <button class="page-btn">‹</button>
-        <button class="page-btn active">1</button>
-        <button class="page-btn">2</button>
-        <button class="page-btn">3</button>
-        <button class="page-btn">4</button>
-        <button class="page-btn">5</button>
-        <button class="page-btn">›</button>
+      <div class="pagination" id="pagination">
+        <!-- Pagination will be rendered dynamically -->
       </div>
     </div>
 
@@ -448,10 +557,10 @@
 
 <div id="footer-root"></div>
 
-<script src="../js/components.js?v=2"></script>
-<script src="../js/api.js?v=2"></script>
+<script src="../js/components.js?v=3"></script>
+<script src="../js/api.js?v=3"></script>
 <script>
-  const API = 'http://localhost/drithi-agro/backend/index.php?route=';
+  const API = 'http://localhost:8000/index.php?route=';
 
   document.getElementById('header-root').innerHTML = renderHeader('categories');
   document.getElementById('footer-root').innerHTML = renderFooter();
@@ -478,9 +587,12 @@
   let currentFilters = {};
 
   async function loadProducts(filters = {}) {
-    const section = document.querySelector('.products-section');
-    const grid    = document.querySelector('.products-grid-4');
+    const grid    = document.getElementById('productsGrid');
     const toolbar = document.querySelector('.cat-toolbar .result-count');
+    const title   = document.getElementById('productsTitle');
+    
+    if (!grid) return;
+    
     grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#888;">⏳ Loading products...</div>';
 
     const params = { ...filters, page: currentPage, limit: 8 };
@@ -489,11 +601,21 @@
       const res = await fetch(API + 'products&' + qs).then(r => r.json());
       if (!res.success || !res.data.length) {
         grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#888;">😔 No products found' + (filters.search ? ' for "' + filters.search + '"' : '') + '.</div>';
-        toolbar.innerHTML = 'Showing <b>0</b> products';
+        if (toolbar) toolbar.innerHTML = 'Showing <b>0</b> products';
         renderPagination(0, 8);
         return;
       }
-      toolbar.innerHTML = 'Showing <b>' + res.meta.total + '</b> products';
+      if (toolbar) toolbar.innerHTML = 'Showing <b>' + res.meta.total + '</b> products';
+      
+      // Update title based on filter
+      if (filters.category_id) {
+        title.textContent = '🔥 Products';
+      } else if (filters.search) {
+        title.textContent = '🔍 Search Results';
+      } else {
+        title.textContent = '🔥 Featured Products';
+      }
+      
       grid.innerHTML = res.data.map(p => {
         const disc = p.mrp > p.selling_price ? Math.round((p.mrp - p.selling_price) / p.mrp * 100) : 0;
         const img  = p.primary_image || 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=400&q=80';
@@ -521,7 +643,9 @@
 
   function renderPagination(total, limit) {
     const pages = Math.ceil(total / limit) || 1;
-    const pag   = document.querySelector('.pagination');
+    const pag   = document.getElementById('pagination');
+    if (!pag) return;
+    
     let html = '<button class="page-btn" onclick="changePage(' + (currentPage - 1) + ')">‹</button>';
     for (let i = 1; i <= Math.min(pages, 5); i++) {
       html += '<button class="page-btn' + (i === currentPage ? ' active' : '') + '" onclick="changePage(' + i + ')">' + i + '</button>';
@@ -539,20 +663,72 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  // ── Accordion sidebar ──
+  function toggleSb(header) {
+    const sub = header.nextElementSibling;
+    const isOpen = header.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.sb-header').forEach(h => h.classList.remove('open'));
+    document.querySelectorAll('.sb-sub').forEach(s => s.classList.remove('open'));
+    // Open clicked if it was closed
+    if (!isOpen) {
+      header.classList.add('open');
+      sub.classList.add('open');
+    }
+  }
+
+  // ── Sidebar search filter ──
+  function filterSbItems(q) {
+    q = q.toLowerCase();
+    document.querySelectorAll('.sb-item').forEach(item => {
+      const label = item.querySelector('.sb-label').textContent.toLowerCase();
+      const subs  = Array.from(item.querySelectorAll('.sb-sub-item')).map(s => s.textContent.toLowerCase());
+      const match = label.includes(q) || subs.some(s => s.includes(q));
+      item.style.display = match ? 'block' : 'none';
+      if (q && subs.some(s => s.includes(q))) {
+        item.querySelector('.sb-header').classList.add('open');
+        item.querySelector('.sb-sub').classList.add('open');
+      }
+    });
+  }
+
+  // ── Mobile sidebar ──
+  function openMobileSidebar() {
+    document.getElementById('sidebar').classList.add('mobile-open');
+    document.getElementById('sbOverlay').classList.add('open');
+  }
+  function closeMobileSidebar() {
+    document.getElementById('sidebar').classList.remove('mobile-open');
+    document.getElementById('sbOverlay').classList.remove('open');
+  }
+
+  // ── Filter by brand (slug) ──
+  function filterByBrand(slug) {
+    closeMobileSidebar();
+    // Find brand id from slug via API not available, use search instead
+    currentFilters = { search: slug.replace(/-/g,' ') };
+    currentPage = 1;
+    document.querySelectorAll('.sb-sub-item').forEach(s => s.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    document.querySelector('.products-section').scrollIntoView({ behavior: 'smooth' });
+    loadProducts({ ...currentFilters });
+  }
+
   // ── Filter by parent category ──
   function filterByParent(parentId, slug) {
+    closeMobileSidebar();
     currentFilters = { category_id: parentId };
     currentPage = 1;
-    document.querySelectorAll('.subcat-row').forEach(r => r.classList.remove('active'));
+    document.querySelectorAll('.subcat-row, .sb-sub-item').forEach(r => r.classList.remove('active'));
     document.querySelector('.products-section').scrollIntoView({ behavior: 'smooth' });
     loadProducts({ ...currentFilters, search: searchTerm });
   }
 
-  // ── Filter by sub-category ──
   function filterBySub(catId) {
+    closeMobileSidebar();
     currentFilters = { category_id: catId };
     currentPage = 1;
-    document.querySelectorAll('.subcat-row').forEach(r => r.classList.remove('active'));
+    document.querySelectorAll('.subcat-row, .sb-sub-item').forEach(r => r.classList.remove('active'));
     event.currentTarget.classList.add('active');
     document.querySelector('.products-section').scrollIntoView({ behavior: 'smooth' });
     loadProducts({ ...currentFilters, search: searchTerm });
@@ -574,3 +750,4 @@
 </script>
 </body>
 </html>
+

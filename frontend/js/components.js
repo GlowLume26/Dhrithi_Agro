@@ -27,46 +27,19 @@ function renderHeader(activePage = '') {
         </div>
       </a>
 
-      <!-- CATEGORIES MENU BUTTON (beside search) -->
+      <!-- CATEGORIES MENU BUTTON -->
       <div class="cat-menu-wrap">
-        <button class="cat-menu-btn" onclick="toggleCatMenu()" id="catMenuBtn">
-          ☰
+        <button class="cat-menu-btn" onclick="toggleCatMenu()" id="catMenuBtn" aria-label="Categories">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
         </button>
-        <!-- MEGA DROPDOWN -->
+        <!-- ACCORDION DROPDOWN -->
         <div class="cat-dropdown" id="catDropdown">
-          <div class="cat-dropdown-grid">
-            <div class="cat-col">
-              <div class="cat-col-title">💧 Irrigation</div>
-              <a href="${base}categories.html?category_id=4">Sprinkler</a>
-              <a href="${base}categories.html?category_id=5">Drip Irrigation Accessories</a>
-              <a href="${base}categories.html?category_id=6">Pipe & Fitting</a>
-              <a href="${base}categories.html?category_id=7">Drip Irrigation Kit</a>
-              <a href="${base}categories.html?category_id=8">Rain Pipe</a>
-              <a href="${base}categories.html?category_id=1" class="view-all-link">View All →</a>
-            </div>
-            <div class="cat-col">
-              <div class="cat-col-title">🌿 Gardening</div>
-              <a href="${base}categories.html?category_id=9">Tools</a>
-              <a href="${base}categories.html?category_id=10">Spray Pumps</a>
-              <a href="${base}categories.html?category_id=11">Lawn Mowers</a>
-              <a href="${base}categories.html?category_id=14">Seeds</a>
-              <a href="${base}categories.html?category_id=15">Fertilizer</a>
-              <a href="${base}categories.html?category_id=18">Coco Peat</a>
-              <a href="${base}categories.html?category_id=21">Grow Bag</a>
-              <a href="${base}categories.html?category_id=23">Flower Seeds</a>
-              <a href="${base}categories.html?category_id=2" class="view-all-link">View All →</a>
-            </div>
-            <div class="cat-col">
-              <div class="cat-col-title">🐄 Cattle & Bird Care</div>
-              <a href="${base}categories.html?category_id=26">Fodder Seed</a>
-              <a href="${base}categories.html?category_id=27">Mineral Mixture</a>
-              <a href="${base}categories.html?category_id=28">Bird Food</a>
-              <a href="${base}categories.html?category_id=30">Aqua Care</a>
-              <a href="${base}categories.html?category_id=32">Goat & Sheep Care</a>
-              <a href="${base}categories.html?category_id=33">Poultry Feed Supplements</a>
-              <a href="${base}categories.html?category_id=36">Animal Health Supplements</a>
-              <a href="${base}categories.html?category_id=3" class="view-all-link">View All →</a>
-            </div>
+          <div class="cat-accordion" id="catAccordion">
+            <div class="cat-loading">Loading categories...</div>
           </div>
         </div>
       </div>
@@ -79,35 +52,30 @@ function renderHeader(activePage = '') {
 
       <!-- ACTIONS -->
       <div class="header-actions">
-        <a href="${base}vendor-register.html" class="action-btn sell">🤝 Sell</a>
+        <a href="${base}vendor-register.html" class="action-btn sell" title="Sell">🤝</a>
 
         <!-- NOTIFICATION BELL -->
-        <div class="action-btn notif-wrap" onclick="toggleNotifPanel()">
+        <div class="action-btn notif-wrap" onclick="toggleNotifPanel()" title="Notifications">
           <span class="icon">🔔</span>
-          <span>Alerts</span>
           <span class="notif-dot" id="notifDot" style="display:none;"></span>
         </div>
 
         <!-- ORDER TRACKER -->
-        <a href="${base}orders.html" class="action-btn">
+        <a href="${base}orders.html" class="action-btn" title="Orders">
           <span class="icon">📦</span>
-          <span>Orders</span>
         </a>
 
-        <a href="${base}wishlist.html" class="action-btn">
+        <a href="${base}wishlist.html" class="action-btn" title="Wishlist">
           <span class="icon">❤️</span>
-          <span>Wishlist</span>
         </a>
 
         <!-- ACCOUNT (shows initial if logged in) -->
-        <a href="${base}account.html" class="action-btn">
-          <span class="icon">${isLoggedIn ? `<span style="background:#f9a825;color:#1b5e20;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;">${initial}</span>` : '👤'}</span>
-          <span>${isLoggedIn ? (user?.full_name?.split(' ')[0] || 'Account') : 'Login'}</span>
+        <a href="${base}account.html" class="action-btn" title="${isLoggedIn ? 'Account' : 'Login'}">
+          <span class="icon">${isLoggedIn ? `<span style="background:#f9a825;color:#1b5e20;border-radius:50%;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;">${initial}</span>` : '👤'}</span>
         </a>
 
-        <a href="${base}cart.html" class="action-btn cart-wrap">
+        <a href="${base}cart.html" class="action-btn cart-wrap" title="Cart">
           <span class="icon">🛒</span>
-          <span>Cart</span>
           <span class="cart-count" id="cartCount">0</span>
         </a>
       </div>
@@ -223,11 +191,111 @@ function toggleMobileMenu() {
   if (m) m.classList.toggle('open');
 }
 
-// ===== CATEGORIES MEGA MENU =====
+// ===== CATEGORIES ACCORDION MENU =====
 function toggleCatMenu() {
   const d = document.getElementById('catDropdown');
-  if (d) d.classList.toggle('open');
+  if (d) {
+    d.classList.toggle('open');
+    if (d.classList.contains('open')) {
+      loadCategories();
+    }
+  }
 }
+
+async function loadCategories() {
+  const accordion = document.getElementById('catAccordion');
+  if (!accordion) return;
+  
+  // Check if already loaded
+  if (accordion.dataset.loaded === 'true') return;
+  
+  try {
+    const res = await fetch('http://localhost:8000/index.php?route=categories');
+    const data = await res.json();
+    
+    if (data.success && data.data) {
+      renderCategories(data.data, accordion);
+      accordion.dataset.loaded = 'true';
+    } else {
+      accordion.innerHTML = '<div class="cat-error">Failed to load categories</div>';
+    }
+  } catch (e) {
+    console.error('Error loading categories:', e);
+    accordion.innerHTML = '<div class="cat-error">Failed to load categories</div>';
+  }
+}
+
+function renderCategories(categories, container) {
+  const base = window.location.pathname.includes('/pages/') ? '' : 'pages/';
+  
+  // Group categories by parent
+  const parentCategories = categories.filter(c => !c.parent_id);
+  const childCategories = categories.filter(c => c.parent_id);
+  
+  // Category icons mapping
+  const icons = {
+    'Irrigation': '💧',
+    'Gardening': '🌿',
+    'Cattle & Bird Care': '🐄',
+    'default': '📦'
+  };
+  
+  let html = '';
+  
+  parentCategories.forEach(parent => {
+    const icon = icons[parent.name] || icons['default'];
+    const children = childCategories.filter(c => c.parent_id === parent.id);
+    
+    html += `
+      <div class="cat-accordion-item">
+        <div class="cat-accordion-header" onclick="toggleAccordion(this)">
+          <span class="cat-accordion-title">${icon} ${parent.name}</span>
+          <span class="cat-accordion-icon">▼</span>
+        </div>
+        <div class="cat-accordion-content">
+    `;
+    
+    children.forEach(child => {
+      html += `<a href="${base}categories.html?category_id=${child.id}">${child.name}</a>`;
+    });
+    
+    html += `
+          <a href="${base}categories.html?category_id=${parent.id}" class="view-all-link">View All ${parent.name} →</a>
+        </div>
+      </div>
+    `;
+  });
+  
+  container.innerHTML = html;
+}
+
+function toggleAccordion(header) {
+  const item = header.parentElement;
+  const content = item.querySelector('.cat-accordion-content');
+  const icon = header.querySelector('.cat-accordion-icon');
+  
+  // Close all other accordion items
+  document.querySelectorAll('.cat-accordion-item').forEach(otherItem => {
+    if (otherItem !== item) {
+      otherItem.classList.remove('active');
+      const otherContent = otherItem.querySelector('.cat-accordion-content');
+      const otherIcon = otherItem.querySelector('.cat-accordion-icon');
+      if (otherContent) otherContent.style.maxHeight = null;
+      if (otherIcon) otherIcon.style.transform = 'rotate(0deg)';
+    }
+  });
+  
+  // Toggle current item
+  item.classList.toggle('active');
+  if (content.style.maxHeight) {
+    content.style.maxHeight = null;
+    icon.style.transform = 'rotate(0deg)';
+  } else {
+    content.style.maxHeight = content.scrollHeight + 'px';
+    icon.style.transform = 'rotate(180deg)';
+  }
+}
+
 document.addEventListener('click', function(e) {
   const wrap = document.querySelector('.cat-menu-wrap');
   if (wrap && !wrap.contains(e.target)) {
@@ -256,12 +324,12 @@ async function loadNotifications() {
   }
   body.innerHTML = '<div class="notif-empty">Loading...</div>';
   try {
-    const res = await fetch('http://localhost/drithi-agro/backend/index.php?route=customer&section=profile', {
+    const res = await fetch('http://localhost:8000/index.php?route=customer&section=profile', {
       headers: { 'Authorization': 'Bearer ' + token }
     }).then(r => r.json());
     if (!res.success) { body.innerHTML = '<div class="notif-empty">No notifications.</div>'; return; }
     // Show recent order status as notification
-    const ordersRes = await fetch('http://localhost/drithi-agro/backend/index.php?route=orders', {
+    const ordersRes = await fetch('http://localhost:8000/index.php?route=orders', {
       headers: { 'Authorization': 'Bearer ' + token }
     }).then(r => r.json());
     if (ordersRes.success && ordersRes.data.length) {
@@ -312,11 +380,7 @@ function addToCart(name) {
 
 // Load cart count on page load
 window.addEventListener('DOMContentLoaded', () => {
-  const saved = localStorage.getItem('cartCount');
-  if (saved) {
-    const el = document.getElementById('cartCount');
-    if (el) el.textContent = saved;
-  }
+  loadCartCount();
   // Check unread notifications
   if (localStorage.getItem('da_token')) {
     setTimeout(() => {
@@ -325,6 +389,25 @@ window.addEventListener('DOMContentLoaded', () => {
     }, 1000);
   }
 });
+
+async function loadCartCount() {
+  const token = localStorage.getItem('da_token');
+  if (!token) return;
+  
+  try {
+    const res = await fetch('http://localhost:8000/index.php?route=cart', {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    const data = await res.json();
+    if (data.success && data.data.items) {
+      const count = data.data.items.length;
+      const el = document.getElementById('cartCount');
+      if (el) el.textContent = count;
+    }
+  } catch (e) {
+    console.error('Error loading cart count:', e);
+  }
+}
 
 // ===== TOAST =====
 function showToast(msg) {

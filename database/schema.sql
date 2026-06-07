@@ -300,8 +300,8 @@ CREATE TABLE offers (
     max_discount    DECIMAL(10,2),
     usage_limit     INT,
     used_count      INT DEFAULT 0,
-    valid_from      TIMESTAMP NOT NULL,
-    valid_until     TIMESTAMP NOT NULL,
+    valid_from      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    valid_until     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     is_active       BOOLEAN DEFAULT TRUE,
     created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
